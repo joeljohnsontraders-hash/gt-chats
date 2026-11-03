@@ -357,7 +357,15 @@ const mediaCache = new Map();
 async function api(body) {
   if (DEMO) return demoApi(body);
   const { data } = await sb.auth.getSession();
-  const r = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + data.session.access_token, apikey: SUPABASE_KEY }, body: JSON.stringify(body) });
+  const req = () => fetch(API, { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + data.session.access_token, apikey: SUPABASE_KEY }, body: JSON.stringify(body) });
+  let r;
+  try { r = await req(); }
+  catch (e) {
+    // brief network drop: wait and try once more (never for sends that may have gone out)
+    if (/^(send_|bulk_start|bulk_resume)/.test(body.action) && !body.dry_run) throw new Error("Network problem. Check the chat/History before trying again.");
+    await new Promise((res) => setTimeout(res, 1500));
+    r = await req().catch(() => { throw new Error("Can't reach the server. Check the internet connection and try again."); });
+  }
   if (body.action === "media") { if (!r.ok) throw new Error("Could not load media"); return r.blob(); }
   const j = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(j.error || "Something went wrong");
@@ -945,7 +953,7 @@ const stat = (l, v) => `<div class="stat"><b>${nf(v)}</b>${l}</div>`;
 async function openProgress(id) { bk.campaign = id; bkShow("progress"); $("bk-progress").innerHTML = `<div class="card"><p class="note">Loading…</p></div>`; await refreshProgress(); bk.timer = setInterval(refreshProgress, 4000); }
 async function refreshProgress() {
   const id = bk.campaign; let c;
-  if (DEMO) c = { id, name: "Hydra facial offer", phone_number_id: "p", template_name: "gdv_festive_offer", status: "sending", total: 120, pending: 40, sent: 30, delivered: 35, read: 10, failed: 3, skipped: 2, created_at: new Date().toISOString(), last_activity_at: new Date().toISOString() };
+  if (DEMO) c = { id, name: "Hydra facial offer", phone_number_id: "p", template_name: "gdv_festive_offer", status: "sending", total: 120, pending: 40, sent: 75, delivered: 45, read: 10, failed: 3, skipped: 2, created_at: new Date().toISOString(), last_activity_at: new Date().toISOString() };
   else {
     const { data, error } = await sb.from("wa_campaign_stats").select("*").eq("id", id).maybeSingle();
     if (bk.view !== "progress" || bk.campaign !== id) return;
@@ -953,7 +961,8 @@ async function refreshProgress() {
     c = data;
   }
   const n = numberById(c.phone_number_id); const total = Math.max(1, c.total);
-  const processed = c.sent + c.delivered + c.read + c.failed + c.skipped;
+  // counts are cumulative: sent ⊇ delivered ⊇ read
+  const processed = c.sent + c.failed + c.skipped;
   const stuck = ["queued", "sending"].includes(c.status) && c.pending > 0 && Date.now() - new Date(c.last_activity_at || c.created_at).getTime() > 150000;
   let reason = "";
   if (c.status === "paused" && !DEMO) { const { data: pr } = await sb.from("wa_campaign_recipients").select("error").eq("campaign_id", id).like("error", "Paused:%").limit(1); reason = (pr?.[0]?.error || "").replace(/^Paused:\s*/, ""); }
@@ -962,7 +971,7 @@ async function refreshProgress() {
   const seg = (v, col) => (v ? `<i style="width:${((v / total) * 100).toFixed(2)}%;background:${col}"></i>` : "");
   $("bk-progress").innerHTML = `<div class="card">
     <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><div style="min-width:0"><h3 style="margin:0 0 2px">${esc(c.name || c.template_name)}</h3><div class="note"><span class="dot-inline" style="background:${BRANCH_COLORS[n.branch] || "#888"}"></span>${esc(n.branch || "")} · ${esc(c.template_name)} · ${new Date(c.created_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</div></div><span class="pill ${esc(c.status)}">${label}</span></div>
-    <div class="progress" style="margin-top:16px">${seg(c.read, "#53bdeb")}${seg(c.delivered, "#25d366")}${seg(c.sent, "#9be3b4")}${seg(c.failed, "#ea0038")}${seg(c.skipped, "#c5ccd0")}</div>
+    <div class="progress" style="margin-top:16px">${seg(c.read, "#53bdeb")}${seg(c.delivered - c.read, "#25d366")}${seg(c.sent - c.delivered, "#9be3b4")}${seg(c.failed, "#ea0038")}${seg(c.skipped, "#c5ccd0")}</div>
     <div class="note" style="margin-top:6px">${nf(processed)} of ${nf(c.total)} done</div>
     <div class="stats">${stat("Waiting", c.pending)}${stat("Sent", c.sent)}${stat("Delivered", c.delivered)}${stat("Read", c.read)}${stat("Failed", c.failed)}${stat("Skipped", c.skipped)}</div>
     ${c.status === "paused" ? `<div class="status bad">Sending stopped: ${esc(reason || "a problem with this WhatsApp account")}. Fix that, then press Resume.</div>` : ""}
@@ -1006,7 +1015,7 @@ async function renderHistory() {
   if (bk.view !== "history") return;
   if (!rows.length) { el.innerHTML = `<div class="card"><p class="note">Nothing sent in bulk yet. Use “New message” to start.</p></div>`; return; }
   const label = { queued: "Starting", sending: "Sending", done: "Finished", cancelled: "Stopped", paused: "Paused" };
-  el.innerHTML = `<div class="card">` + rows.map((c) => { const n = numberById(c.phone_number_id); return `<div class="camp-row" data-id="${c.id}"><div style="min-width:0"><b>${esc(c.name || c.template_name)}</b><div class="note"><span class="dot-inline" style="background:${BRANCH_COLORS[n.branch] || "#888"}"></span>${esc(n.branch || "")} · ${new Date(c.created_at).toLocaleDateString([], { day: "numeric", month: "short" })} · ${nf(c.total)} customers · ${nf(c.delivered + c.read)} delivered${c.failed ? ` · ${nf(c.failed)} failed` : ""}</div></div><span class="pill ${esc(c.status)}">${label[c.status] || esc(c.status)}</span></div>`; }).join("") + `</div>`;
+  el.innerHTML = `<div class="card">` + rows.map((c) => { const n = numberById(c.phone_number_id); return `<div class="camp-row" data-id="${c.id}"><div style="min-width:0"><b>${esc(c.name || c.template_name)}</b><div class="note"><span class="dot-inline" style="background:${BRANCH_COLORS[n.branch] || "#888"}"></span>${esc(n.branch || "")} · ${new Date(c.created_at).toLocaleDateString([], { day: "numeric", month: "short" })} · ${nf(c.total)} customers · ${nf(c.delivered)} delivered${c.failed ? ` · ${nf(c.failed)} failed` : ""}</div></div><span class="pill ${esc(c.status)}">${label[c.status] || esc(c.status)}</span></div>`; }).join("") + `</div>`;
   el.querySelectorAll(".camp-row").forEach((r) => (r.onclick = () => openProgress(Number(r.dataset.id))));
 }
 
