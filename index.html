@@ -146,6 +146,52 @@ svg{display:block}
 .menu button{display:block;width:100%;text-align:left;padding:12px 24px;font-size:14.5px}
 .menu button:hover{background:var(--hover)}
 
+/* ---------- bulk send ---------- */
+#bulk{position:fixed;inset:0;z-index:30;background:var(--bg);display:flex;flex-direction:column}
+.bar.bk-bar{background:var(--green);color:#fff}
+.bar.bk-bar .icon-btn{color:#fff}
+.bar.bk-bar .subtitle{color:rgba(255,255,255,.8)}
+.bk-body{flex:1;overflow-y:auto;padding:16px 16px calc(24px + env(safe-area-inset-bottom))}
+.bk-wrap{max-width:760px;margin:0 auto}
+.card{background:#fff;border-radius:10px;padding:16px 18px;margin-bottom:12px;box-shadow:0 1px 2px rgba(11,20,26,.08)}
+.card h3{font-size:16px;font-weight:600;margin-bottom:12px;display:flex;gap:10px;align-items:center}
+.card h3 .num{width:24px;height:24px;flex:none;border-radius:50%;background:var(--green);color:#fff;font-size:13px;display:inline-flex;align-items:center;justify-content:center}
+.branch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.bopt{border:2px solid var(--line);border-radius:10px;padding:10px 12px;text-align:left;display:block}
+.bopt:hover{border-color:#b9c3c8}
+.bopt.on{border-color:var(--green);background:#f3fbf8}
+.bopt b{font-size:15px}
+.bopt .dot,.dot-inline{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.status{border-radius:8px;padding:10px 12px;font-size:13.5px;line-height:1.45;margin-top:10px;background:var(--bg)}
+.status.ok{background:#e7fce3;color:#1e5f2b}
+.status.bad{background:#fdecee;color:#9b1c2c}
+.status.warn{background:#fff7d6;color:#6b5500}
+.tpl-item.off{opacity:.65;cursor:not-allowed}
+.tpl-item.off:hover{border-color:var(--line);background:#fff}
+.map-row{display:grid;grid-template-columns:54px 1fr 1fr;gap:8px;align-items:center;margin-bottom:8px}
+.map-row select,.map-row input{width:100%;padding:9px 10px;border:1px solid #d1d7db;border-radius:8px;background:#fff;outline:none;min-width:0}
+.bk-preview{background:var(--chat);border-radius:8px;padding:12px;display:flex}
+.bk-preview .bubble{max-width:100%;background:#fff;border-top-left-radius:0}
+.bk-preview .bubble img.media{width:100%;max-width:330px}
+.bk-preview .foot{color:var(--muted);font-size:13px;margin-top:4px}
+.bk-preview .qbtn{margin-top:6px;border-top:1px solid var(--line);padding-top:6px;text-align:center;color:#027eb5;font-size:14px}
+table.mini{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;display:block;overflow-x:auto}
+table.mini th,table.mini td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+table.mini th{color:var(--muted);font-weight:500}
+table.mini td.ph{background:#f3fbf8;font-weight:500}
+.progress{height:12px;background:var(--line);border-radius:6px;overflow:hidden;display:flex}
+.progress i{display:block;height:100%}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px;margin-top:14px}
+.stat{background:var(--bg);border-radius:8px;padding:8px 10px;font-size:12.5px;color:var(--muted)}
+.stat b{font-size:20px;display:block;color:var(--text);font-weight:600}
+.camp-row{display:flex;justify-content:space-between;align-items:center;padding:12px 2px;border-bottom:1px solid var(--line);cursor:pointer;gap:10px}
+.camp-row:last-child{border-bottom:0}
+.camp-row:hover{background:var(--hover)}
+.pill{font-size:11px;padding:3px 9px;border-radius:10px;background:var(--bg);color:var(--muted);text-transform:uppercase;font-weight:600;white-space:nowrap}
+.pill.sending,.pill.queued{background:#e1f3fb;color:#027eb5}
+.pill.done{background:#e7fce3;color:#1e5f2b}
+.pill.paused{background:#fdecee;color:#9b1c2c}
+
 /* ---------- mobile ---------- */
 @media(max-width:820px){
   #side{width:100%;max-width:none;min-width:0;border:0}
@@ -153,6 +199,10 @@ svg{display:block}
   body.in-chat #main{transform:none}
   #welcome{display:none}
   #msgs{padding:10px 10px 6px}
+  .bk-body{padding:10px 10px calc(20px + env(safe-area-inset-bottom))}
+  .card{padding:14px}
+  .map-row{grid-template-columns:44px 1fr}
+  .map-row input{grid-column:2}
   .bubble{max-width:85%}
   .bar.side-bar{background:var(--green);color:#fff}
   .bar.side-bar .icon-btn{color:#fff}
@@ -191,9 +241,11 @@ svg{display:block}
     <div class="bar side-bar">
       <div class="avatar" style="background:#00a884">GT</div>
       <div class="grow"><div class="title">Green Trends</div><div class="subtitle" id="me-line"></div></div>
+      <button class="icon-btn" id="btn-bulk" title="Bulk send"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18 11v2h4v-2h-4zm-2 6.61c.96.71 2.21 1.65 3.2 2.39.4-.53.8-1.07 1.2-1.6-.99-.74-2.24-1.68-3.2-2.4-.4.54-.8 1.08-1.2 1.61zM20.4 5.6c-.4-.53-.8-1.07-1.2-1.6-.99.74-2.24 1.68-3.2 2.4.4.53.8 1.07 1.2 1.6.96-.72 2.21-1.65 3.2-2.4zM4 9c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h1v4h2v-4h1l5 3V6L8 9H4zm11.5 3c0-1.33-.58-2.53-1.5-3.35v6.69c.92-.81 1.5-2.01 1.5-3.34z"/></svg></button>
       <button class="icon-btn" id="btn-new" title="New chat"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.005 3.175H4.674C3.642 3.175 3 3.789 3 4.821V21.02l3.544-3.514h12.461c1.033 0 2.064-1.06 2.064-2.093V4.821c-.001-1.032-1.032-1.646-2.064-1.646zm-4.989 9.869H7.041V11.1h6.975v1.944zm3-4H7.041V7.1h9.975v1.944z"/></svg></button>
       <button class="icon-btn" id="btn-menu" title="Menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7a2 2 0 1 0-.001-4.001A2 2 0 0 0 12 7zm0 2a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 9zm0 6a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 15z"/></svg></button>
       <div class="menu hidden" id="menu">
+        <button id="m-bulk">Bulk send</button>
         <button id="m-notify">Turn on notifications</button>
         <button id="m-refresh">Refresh</button>
         <button id="m-logout">Log out</button>
@@ -228,6 +280,20 @@ svg{display:block}
       </div>
     </section>
   </main>
+</div>
+
+<!-- ============ BULK SEND ============ -->
+<div id="bulk" class="hidden">
+  <div class="bar bk-bar">
+    <button class="icon-btn" id="bk-back" title="Back"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l1.4 1.4L7.8 11H20v2H7.8l5.6 5.6L12 20l-8-8 8-8z"/></svg></button>
+    <div class="grow"><div class="title">Bulk send</div><div class="subtitle">Send an approved template to many customers</div></div>
+  </div>
+  <div class="bk-body"><div class="bk-wrap">
+    <div class="chips" id="bk-tabs" style="border:0;background:none;padding:0 0 12px"><button class="chip on" data-v="new">New message</button><button class="chip" data-v="history">History</button></div>
+    <div id="bk-new"><div class="card" id="bk-s1"></div><div class="card" id="bk-s2"></div><div class="card" id="bk-s3"></div><div class="card" id="bk-s4"></div><div class="card" id="bk-s5"></div></div>
+    <div id="bk-history" class="hidden"></div>
+    <div id="bk-progress" class="hidden"></div>
+  </div></div>
 </div>
 
 <div id="modal-root"></div>
@@ -379,7 +445,8 @@ function subscribe() {
       if (i >= 0) convs[i] = row; else convs.unshift(row);
       convs.sort((a, b) => new Date(b.last_message_at || 0) - new Date(a.last_message_at || 0));
       if (current && current.id === row.id) { current = row; renderWindow(); }
-      renderChips(); renderList();
+      // bulk sends can fire hundreds of updates; redraw the list at most a few times a second
+      if (!subscribe._t) subscribe._t = setTimeout(() => { subscribe._t = null; renderChips(); renderList(); }, 250);
     })
     .on("postgres_changes", { event: "*", schema: "public", table: "wa_messages" }, (p) => {
       const row = p.new; if (!row?.id) return;
@@ -614,6 +681,335 @@ function notify(m) {
   try { if ("Notification" in window && Notification.permission === "granted") new Notification(title, { body: m.body || m.msg_type, icon: "icon-192.png", tag: "c" + m.conversation_id }); } catch (_) {}
 }
 
+/* ===================== bulk send ===================== */
+// Approximate Meta charge per delivered message in India (₹, before GST)
+const RATE = { MARKETING: 0.7846, UTILITY: 0.115, AUTHENTICATION: 0.115 };
+const bk = { branch: null, health: null, healthLoading: false, healthError: null, templates: [], tplLoading: false, tplError: null, tpl: null,
+  rows: [], width: 0, hasHeader: false, headers: [], phoneCol: -1, nameCol: -1, map: [], img: "", name: "", view: "new", campaign: null, timer: null };
+
+function normPhone(v) { let d = String(v ?? "").replace(/\D/g, ""); if (d.startsWith("0") && d.length === 11) d = d.slice(1); if (d.length === 10) d = "91" + d; return d.length >= 11 && d.length <= 15 ? d : null; }
+const cleanParam = (s) => String(s ?? "").replace(/\s+/g, " ").trim().slice(0, 900);
+const cellStr = (v) => (typeof v === "number" ? (Number.isInteger(v) ? String(v) : String(v)) : String(v ?? "")).trim();
+const money = (n) => "₹" + (n < 100 ? n.toFixed(2) : Math.round(n).toLocaleString("en-IN"));
+const nf = (n) => Number(n || 0).toLocaleString("en-IN");
+const colLetter = (i) => (i >= 26 ? String.fromCharCode(64 + Math.floor(i / 26)) : "") + String.fromCharCode(65 + (i % 26));
+const colName = (i) => (bk.hasHeader && String(bk.headers[i] || "").trim()) ? String(bk.headers[i]).trim() : "Column " + colLetter(i);
+const isImg = () => !!bk.tpl && tplHeader(bk.tpl)?.format === "IMAGE";
+const fillText = (t, params) => { let o = t || ""; params.forEach((v, i) => (o = o.split(`{{${i + 1}}}`).join(v))); return o; };
+const dataRows = () => (bk.hasHeader ? bk.rows.slice(1) : bk.rows);
+const rateFor = (t) => RATE[t?.category] ?? RATE.MARKETING;
+
+function openBulk() { $("menu").classList.add("hidden"); $("bulk").classList.remove("hidden"); bkShow(bk.view === "progress" ? "history" : bk.view); }
+function closeBulk() { clearInterval(bk.timer); $("bulk").classList.add("hidden"); }
+$("btn-bulk").onclick = (e) => { e.stopPropagation(); openBulk(); };
+$("m-bulk").onclick = (e) => { e.stopPropagation(); openBulk(); };
+$("bk-back").onclick = () => { if (bk.view === "progress") bkShow("history"); else closeBulk(); };
+document.querySelectorAll("#bk-tabs .chip").forEach((b) => (b.onclick = () => bkShow(b.dataset.v)));
+
+function bkShow(v) {
+  bk.view = v; clearInterval(bk.timer);
+  document.querySelectorAll("#bk-tabs .chip").forEach((b) => b.classList.toggle("on", b.dataset.v === v));
+  $("bk-tabs").classList.toggle("hidden", v === "progress");
+  $("bk-new").classList.toggle("hidden", v !== "new");
+  $("bk-history").classList.toggle("hidden", v !== "history");
+  $("bk-progress").classList.toggle("hidden", v !== "progress");
+  if (v === "new") { renderS1(); renderS2(); renderS3(); renderS4(); renderS5(); }
+  if (v === "history") renderHistory();
+}
+
+/* ---- step 1: branch ---- */
+function renderS1() {
+  $("bk-s1").innerHTML = `<h3><span class="num">1</span>Send from</h3><div class="branch-grid">` +
+    numbers.map((n) => `<button class="bopt ${bk.branch?.phone_number_id === n.phone_number_id ? "on" : ""}" data-id="${esc(n.phone_number_id)}"><span class="dot" style="background:${BRANCH_COLORS[n.branch] || "#888"}"></span><b>${esc(n.branch)}</b><div class="note">${esc(n.display_phone)}</div></button>`).join("") +
+    `</div><div id="bk-health"></div>`;
+  $("bk-s1").querySelectorAll(".bopt").forEach((b) => (b.onclick = () => pickBranch(b.dataset.id)));
+  renderHealth();
+}
+function renderHealth() {
+  const el = $("bk-health"); if (!el) return;
+  if (!bk.branch) { el.innerHTML = ""; return; }
+  if (bk.healthLoading) { el.innerHTML = `<div class="status">Checking ${esc(bk.branch.branch)}…</div>`; return; }
+  if (bk.healthError) { el.innerHTML = `<div class="status bad">${esc(bk.healthError)}</div>`; return; }
+  const h = bk.health; let s = "";
+  if (h.issues.length) s += `<div class="status bad"><b>Can't send from ${esc(bk.branch.branch)} yet</b><br>${h.issues.map(esc).join("<br>")}</div>`;
+  else s += `<div class="status ok">✓ ${esc(bk.branch.branch)} is ready. You can message <b>${nf(h.remaining_24h)}</b> more customers in the next 24 hours (limit ${nf(h.daily_limit)} a day, shared by all four branches).</div>`;
+  if (!h.issues.length && h.name_status && h.name_status !== "APPROVED") s += `<div class="status warn">The name "Green Trends ${esc(bk.branch.branch)}" is still under review, so customers see the number for now. Messages still go through.</div>`;
+  el.innerHTML = s;
+}
+async function pickBranch(id) {
+  if (bk.branch?.phone_number_id === id && !bk.healthError && !bk.tplError) return;
+  bk.branch = numbers.find((n) => n.phone_number_id === id); bk.tpl = null; bk.templates = []; bk.map = [];
+  bk.health = null; bk.healthError = null; bk.healthLoading = true; bk.tplError = null; bk.tplLoading = true;
+  renderS1(); renderS2(); renderS4(); renderS5();
+  const [h, t] = await Promise.allSettled([api({ action: "branch_health", phone_number_id: id }), api({ action: "templates", phone_number_id: id })]);
+  if (bk.branch?.phone_number_id !== id) return;
+  bk.healthLoading = false; bk.tplLoading = false;
+  if (h.status === "fulfilled") bk.health = h.value; else bk.healthError = h.reason.message;
+  if (t.status === "fulfilled") bk.templates = t.value.templates || []; else bk.tplError = t.reason.message;
+  renderHealth(); renderS2(); renderS5();
+}
+
+/* ---- step 2: template ---- */
+function renderS2() {
+  const el = $("bk-s2"); let h = `<h3><span class="num">2</span>Message template</h3>`;
+  if (!bk.branch) h += `<p class="note">Pick a branch first.</p>`;
+  else if (bk.tplLoading) h += `<p class="note">Loading approved templates…</p>`;
+  else if (bk.tplError) h += `<div class="status bad">${esc(bk.tplError)}</div>`;
+  else if (!bk.templates.length) h += `<div class="status warn">${esc(bk.branch.branch)} has no approved templates yet. Create one in WhatsApp Manager → Message templates for the Green Trends ${esc(bk.branch.branch)} account (choose <b>Marketing</b> for offers), wait for approval, then come back.</div>`;
+  else h += bk.templates.map((t, i) => {
+    const ok = t.bulk?.ok !== false;
+    return `<div class="tpl-item ${bk.tpl === t ? "on" : ""} ${ok ? "" : "off"}" data-i="${i}"><b>${esc(t.name)}</b><span class="cat">${esc(t.category)} · ${esc(t.language)} · ≈ ₹${rateFor(t).toFixed(2)} + GST each</span>${tplHeader(t)?.format === "IMAGE" ? `<div class="note">🖼 Has a picture on top</div>` : ""}<div class="txt">${esc(tplBody(t))}</div>${ok ? "" : `<div class="err-line">${esc(t.bulk.reason)}</div>`}</div>`;
+  }).join("");
+  el.innerHTML = h;
+  el.querySelectorAll(".tpl-item:not(.off)").forEach((d) => (d.onclick = () => { bk.tpl = bk.templates[Number(d.dataset.i)]; setupMap(); renderS2(); renderS4(); renderS5(); }));
+}
+function setupMap() {
+  const n = bk.tpl ? (bk.tpl.bulk?.bodyParams ?? paramCount(bk.tpl)) : 0;
+  const old = bk.map; bk.map = [];
+  for (let i = 0; i < n; i++) bk.map.push(old[i] || { col: i === 0 && bk.nameCol >= 0 ? bk.nameCol : -1, fixed: "", fallback: i === 0 ? "Customer" : "" });
+}
+
+/* ---- step 3: customers ---- */
+async function loadXLSX() {
+  if (window.XLSX) return;
+  await new Promise((res, rej) => { const s = document.createElement("script"); s.src = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"; s.onload = res; s.onerror = () => rej(new Error("Could not load the Excel reader. Check the internet connection and try again.")); document.head.appendChild(s); });
+}
+async function readSheet(file) {
+  await loadXLSX();
+  const wb = XLSX.read(await file.arrayBuffer(), { type: "array" });
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  return XLSX.utils.sheet_to_json(ws, { header: 1, raw: true, defval: "" });
+}
+function parsePaste(text) {
+  let rows = String(text || "").split(/\r?\n/).map((l) => l.split(/\t|,|;/).map((s) => s.trim()));
+  const cells = rows.flat().filter(Boolean);
+  if (cells.length && cells.every((c) => normPhone(c))) rows = cells.map((c) => [c]); // a plain list of numbers
+  return rows;
+}
+function loadRows(rows) {
+  rows = rows.map((r) => (Array.isArray(r) ? r : [r]).map(cellStr)).filter((r) => r.some((c) => c));
+  if (!rows.length) { toast("No rows found"); return; }
+  const width = Math.max(...rows.map((r) => r.length));
+  let best = -1, bestN = 0;
+  for (let c = 0; c < width; c++) { const n = rows.filter((r) => normPhone(r[c])).length; if (n > bestN) { bestN = n; best = c; } }
+  if (best < 0) { toast("Couldn't find any mobile numbers in that list", 5000); return; }
+  bk.rows = rows; bk.width = width; bk.phoneCol = best;
+  bk.hasHeader = rows.length > 1 && !normPhone(rows[0][best]);
+  bk.headers = bk.hasHeader ? rows[0] : [];
+  bk.nameCol = -1;
+  if (bk.hasHeader) bk.nameCol = bk.headers.findIndex((h, i) => i !== best && /name/i.test(h));
+  if (bk.nameCol < 0) for (let c = 0; c < width; c++) { if (c === best) continue; const d = dataRows(); if (d.filter((r) => /[a-z]/i.test(r[c] || "")).length > d.length / 2) { bk.nameCol = c; break; } }
+  bk.map = []; setupMap();
+  renderS3(); renderS4(); renderS5();
+}
+function colOptions(sel) {
+  const first = dataRows()[0] || [];
+  let o = ""; for (let i = 0; i < bk.width; i++) o += `<option value="${i}" ${i === sel ? "selected" : ""}>${esc(colName(i))}${first[i] ? ` (e.g. ${esc(String(first[i]).slice(0, 24))})` : ""}</option>`;
+  return o;
+}
+function buildRecipients() {
+  const seen = new Set(), list = [], invalid = []; let dupes = 0;
+  for (const r of dataRows()) {
+    const raw = r[bk.phoneCol]; const phone = normPhone(raw);
+    if (!phone) { if (String(raw ?? "").trim()) invalid.push(String(raw)); continue; }
+    if (seen.has(phone)) { dupes++; continue; }
+    seen.add(phone);
+    const name = bk.nameCol >= 0 ? cleanParam(r[bk.nameCol]).slice(0, 80) : "";
+    const params = bk.map.map((m) => cleanParam(m.col < 0 ? m.fixed : (cleanParam(r[m.col]) || m.fallback)));
+    list.push({ phone, name, params });
+  }
+  return { list, invalid, dupes, valid: list.length };
+}
+function renderS3() {
+  const el = $("bk-s3");
+  let h = `<h3><span class="num">3</span>Customers</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost" id="bk-file-btn">Upload Excel / CSV</button><button class="btn ghost" id="bk-paste-btn">Paste numbers</button>${bk.rows.length ? `<button class="btn ghost" id="bk-clear">Clear list</button>` : ""}</div>
+    <input type="file" id="bk-file" class="hidden" accept=".xlsx,.xls,.csv,.txt,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+    <div id="bk-paste" class="hidden" style="margin-top:10px"><textarea id="bk-paste-text" rows="6" placeholder="9876543210, Priya&#10;9840012345, Karthik" style="width:100%;padding:10px 12px;border:1px solid #d1d7db;border-radius:8px;outline:none"></textarea><button class="btn" id="bk-paste-ok" style="margin-top:8px">Use this list</button></div>
+    <p class="note" style="margin-top:8px">One customer per row. A column with the mobile number is enough; add a name column to greet them by name. 10-digit numbers get +91 added. Only send to customers who agreed to hear from Green Trends.</p>`;
+  if (bk.rows.length) {
+    const s = buildRecipients(); const d = dataRows();
+    h += `<div class="map-row" style="grid-template-columns:1fr 1fr;margin-top:12px"><label class="field" style="margin:0"><span>Mobile number column</span><select id="bk-phonecol">${colOptions(bk.phoneCol)}</select></label>
+      <label class="field" style="margin:0"><span>Name column (optional)</span><select id="bk-namecol"><option value="-1">— none —</option>${colOptions(bk.nameCol)}</select></label></div>
+      <label style="display:flex;gap:8px;align-items:center;font-size:13.5px;margin-top:4px"><input type="checkbox" id="bk-hdr" ${bk.hasHeader ? "checked" : ""}> First row is column names</label>
+      <div class="status ${s.valid ? "ok" : "bad"}"><b>${nf(s.valid)}</b> customer${s.valid === 1 ? "" : "s"} ready${s.dupes ? ` · ${nf(s.dupes)} repeated number${s.dupes > 1 ? "s" : ""} removed` : ""}${s.invalid.length ? ` · <b>${nf(s.invalid.length)}</b> wrong number${s.invalid.length > 1 ? "s" : ""} will be left out` : ""}</div>
+      ${s.invalid.length ? `<p class="note">Wrong numbers: ${s.invalid.slice(0, 8).map(esc).join(", ")}${s.invalid.length > 8 ? " …" : ""}</p>` : ""}
+      <table class="mini"><tr>${Array.from({ length: bk.width }, (_, i) => `<th>${esc(colName(i))}</th>`).join("")}</tr>${d.slice(0, 4).map((r) => `<tr>${Array.from({ length: bk.width }, (_, i) => `<td class="${i === bk.phoneCol ? "ph" : ""}">${esc(String(r[i] ?? "").slice(0, 30))}</td>`).join("")}</tr>`).join("")}</table>
+      ${d.length > 4 ? `<p class="note">…and ${nf(d.length - 4)} more rows</p>` : ""}`;
+  }
+  el.innerHTML = h;
+  $("bk-file-btn").onclick = () => $("bk-file").click();
+  $("bk-file").onchange = async (e) => {
+    const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+    try { $("bk-file-btn").textContent = "Reading…"; loadRows(await readSheet(f)); }
+    catch (err) { toast(err.message || "Could not read that file", 6000); }
+    finally { if ($("bk-file-btn")) $("bk-file-btn").textContent = "Upload Excel / CSV"; }
+  };
+  $("bk-paste-btn").onclick = () => { $("bk-paste").classList.toggle("hidden"); $("bk-paste-text").focus(); };
+  $("bk-paste-ok").onclick = () => loadRows(parsePaste($("bk-paste-text").value));
+  if ($("bk-clear")) $("bk-clear").onclick = () => { bk.rows = []; bk.width = 0; bk.phoneCol = -1; bk.nameCol = -1; setupMap(); renderS3(); renderS4(); renderS5(); };
+  if ($("bk-phonecol")) $("bk-phonecol").onchange = (e) => { bk.phoneCol = Number(e.target.value); renderS3(); renderS4(); renderS5(); };
+  if ($("bk-namecol")) $("bk-namecol").onchange = (e) => { bk.nameCol = Number(e.target.value); renderS3(); renderS5(); };
+  if ($("bk-hdr")) $("bk-hdr").onchange = (e) => { bk.hasHeader = e.target.checked; bk.headers = bk.hasHeader ? bk.rows[0] : []; renderS3(); renderS4(); renderS5(); };
+}
+
+/* ---- step 4: blanks ---- */
+function renderS4() {
+  const el = $("bk-s4"); const n = bk.map.length;
+  let h = `<h3><span class="num">4</span>Fill the blanks</h3>`;
+  if (!bk.tpl) h += `<p class="note">Choose a template first.</p>`;
+  else if (!n && !isImg()) h += `<p class="note">This template has no blanks, so every customer gets the same message.</p>`;
+  else {
+    if (n) h += `<p class="note" style="margin:-4px 0 10px">Pick a column from your list, or type the same text for everyone.</p>`;
+    bk.map.forEach((m, i) => {
+      h += `<div class="map-row"><b>{{${i + 1}}}</b><select data-mi="${i}"><option value="-1" ${m.col < 0 ? "selected" : ""}>Same text for everyone</option>${bk.rows.length ? colOptions(m.col) : ""}</select>
+        <input data-mf="${i}" value="${esc(m.col < 0 ? m.fixed : m.fallback)}" placeholder="${m.col < 0 ? "Type the text" : "If empty, use… (e.g. Customer)"}"></div>`;
+    });
+    if (isImg()) h += `<label class="field" style="margin-top:8px"><span>Picture for the top of the message — a public https:// link to a .jpg or .png</span><input id="bk-img" value="${esc(bk.img)}" placeholder="https://…/offer.jpg" inputmode="url"></label>`;
+  }
+  el.innerHTML = h;
+  el.querySelectorAll("[data-mi]").forEach((s) => (s.onchange = () => { const m = bk.map[Number(s.dataset.mi)]; m.col = Number(s.value); if (m.col >= 0 && !m.fallback) m.fallback = ""; renderS4(); renderS5(); }));
+  el.querySelectorAll("[data-mf]").forEach((inp) => (inp.oninput = () => { const m = bk.map[Number(inp.dataset.mf)]; if (m.col < 0) m.fixed = inp.value; else m.fallback = inp.value; renderS5(); }));
+  if ($("bk-img")) $("bk-img").oninput = (e) => { bk.img = e.target.value; renderS5(); };
+}
+
+/* ---- step 5: check & send ---- */
+function bulkProblems(r) {
+  const p = [];
+  if (!bk.branch) p.push("Pick the branch to send from.");
+  else if (bk.healthLoading) p.push("Checking the branch…");
+  else if (bk.healthError) p.push(bk.healthError);
+  else if (bk.health?.issues.length) p.push(bk.health.issues[0]);
+  if (!bk.tpl) p.push("Choose a template.");
+  if (!r.valid) p.push("Add the customers' numbers.");
+  if (bk.tpl) {
+    bk.map.forEach((m, i) => {
+      if (m.col < 0 && !cleanParam(m.fixed)) p.push(`Type the text for {{${i + 1}}}.`);
+      else if (m.col >= 0) { const empty = r.list.filter((x) => !x.params[i]).length; if (empty) p.push(`${nf(empty)} customer${empty > 1 ? "s have" : " has"} nothing in "${colName(m.col)}" for {{${i + 1}}}. Type an "If empty, use…" text.`); }
+    });
+    if (isImg() && !/^https:\/\/\S+$/i.test(bk.img.trim())) p.push("Add the picture link (it must start with https://).");
+  }
+  if (bk.health && !bk.health.issues.length && r.valid > bk.health.remaining_24h) p.push(`That's ${nf(r.valid)} customers, but only ${nf(bk.health.remaining_24h)} more can be messaged in the next 24 hours. Send part of the list now and the rest tomorrow.`);
+  return p;
+}
+function renderS5(errMsg) {
+  const el = $("bk-s5"); const r = bk.rows.length ? buildRecipients() : { list: [], valid: 0, invalid: [] };
+  const problems = bulkProblems(r);
+  let h = `<h3><span class="num">5</span>Check and send</h3>`;
+  if (bk.tpl && r.valid) {
+    const ex = r.list[0]; const comps = bk.tpl.components || [];
+    const hdr = tplHeader(bk.tpl); const foot = comps.find((c) => c.type === "FOOTER"); const btns = comps.find((c) => c.type === "BUTTONS");
+    h += `<div class="note" style="margin-bottom:6px">How ${esc(ex.name || fmtPhone(ex.phone))} will see it:</div><div class="bk-preview"><div class="bubble">`
+      + (isImg() ? (/^https:\/\/\S+$/i.test(bk.img.trim()) ? `<img class="media" src="${esc(bk.img.trim())}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'load-media',textContent:'Picture link does not open'}))">` : `<div class="load-media">Picture goes here</div>`) : "")
+      + (hdr?.format === "TEXT" ? `<b>${esc(hdr.text)}</b>\n` : "")
+      + linkify(fillText(tplBody(bk.tpl), ex.params))
+      + (foot ? `<div class="foot">${esc(foot.text)}</div>` : "")
+      + (btns?.buttons || []).map((b) => `<div class="qbtn">${esc(b.text)}</div>`).join("") + `</div></div>`;
+    h += `<p style="margin:12px 0 0"><b>${nf(r.valid)}</b> customer${r.valid === 1 ? "" : "s"} · about <b>${money(r.valid * rateFor(bk.tpl))}</b> + GST <span class="note">(${esc(String(bk.tpl.category).toLowerCase())} rate; Meta charges only for delivered messages)</span></p>`;
+  }
+  h += `<label class="field" style="margin-top:12px"><span>Name for this send (shows in History)</span><input id="bk-name" value="${esc(bk.name)}" placeholder="e.g. Hydra facial offer – Potheri" maxlength="80"></label>`;
+  if (problems.length) h += `<div class="status warn">${esc(problems[0])}</div>`;
+  if (errMsg) h += `<div class="status bad">${esc(errMsg)}</div>`;
+  h += `<button class="btn wide" id="bk-go" style="margin-top:12px" ${problems.length ? "disabled" : ""}>Review and send${r.valid ? ` to ${nf(r.valid)}` : ""}</button>`;
+  el.innerHTML = h;
+  $("bk-name").oninput = (e) => (bk.name = e.target.value);
+  $("bk-go").onclick = () => confirmSend(r.list);
+}
+async function confirmSend(list) {
+  const go = $("bk-go"); go.disabled = true; go.textContent = "Checking…";
+  const payload = { action: "bulk_start", phone_number_id: bk.branch.phone_number_id, template_name: bk.tpl.name, language: bk.tpl.language,
+    header_image: isImg() ? bk.img.trim() : undefined, name: bk.name.trim(), recipients: list };
+  let dry;
+  try { dry = await api({ ...payload, dry_run: true }); }
+  catch (e) { renderS5(e.message); return; }
+  renderS5();
+  const br = bk.branch, tpl = bk.tpl;
+  const bg = modal("Send now?", `<p style="line-height:1.5">Send <b>${esc(tpl.name)}</b> from <b>Green Trends ${esc(br.branch)}</b> (${esc(br.display_phone)}) to <b>${nf(dry.to_send)}</b> customer${dry.to_send === 1 ? "" : "s"}.</p>
+      ${dry.opted_out ? `<p class="note">${nf(dry.opted_out)} customer(s) replied STOP before and will be skipped.</p>` : ""}
+      ${dry.invalid?.length ? `<p class="note">${nf(dry.invalid.length)} row(s) left out: ${esc(dry.invalid.slice(0, 5).join(", "))}${dry.invalid.length > 5 ? " …" : ""}</p>` : ""}
+      <p class="note" style="margin-top:10px">Estimated cost about ${money(dry.to_send * rateFor(tpl))} + GST. Messages go out over the next few minutes, and you can close this screen while they send.</p>`,
+    `<button class="btn ghost" data-close2>Cancel</button><button class="btn" id="bk-confirm">Send now</button>`);
+  bg.querySelector("[data-close2]").onclick = closeModal;
+  $("bk-confirm").onclick = async () => {
+    const b = $("bk-confirm"); b.disabled = true; b.textContent = "Starting…";
+    try {
+      const res = await api(payload); closeModal();
+      bk.rows = []; bk.width = 0; bk.phoneCol = -1; bk.nameCol = -1; bk.name = ""; bk.img = ""; bk.tpl = null; bk.map = [];
+      toast(`Sending to ${nf(res.to_send)} customers`); openProgress(res.campaign_id);
+    } catch (e) { toast(e.message, 7000); b.disabled = false; b.textContent = "Send now"; }
+  };
+}
+
+/* ---- progress & history ---- */
+const stat = (l, v) => `<div class="stat"><b>${nf(v)}</b>${l}</div>`;
+async function openProgress(id) { bk.campaign = id; bkShow("progress"); $("bk-progress").innerHTML = `<div class="card"><p class="note">Loading…</p></div>`; await refreshProgress(); bk.timer = setInterval(refreshProgress, 4000); }
+async function refreshProgress() {
+  const id = bk.campaign; let c;
+  if (DEMO) c = { id, name: "Hydra facial offer", phone_number_id: "p", template_name: "gdv_festive_offer", status: "sending", total: 120, pending: 40, sent: 30, delivered: 35, read: 10, failed: 3, skipped: 2, created_at: new Date().toISOString(), last_activity_at: new Date().toISOString() };
+  else {
+    const { data, error } = await sb.from("wa_campaign_stats").select("*").eq("id", id).maybeSingle();
+    if (bk.view !== "progress" || bk.campaign !== id) return;
+    if (error || !data) { $("bk-progress").innerHTML = `<div class="card"><div class="status bad">${esc(error?.message || "Not found")}</div></div>`; return; }
+    c = data;
+  }
+  const n = numberById(c.phone_number_id); const total = Math.max(1, c.total);
+  const processed = c.sent + c.delivered + c.read + c.failed + c.skipped;
+  const stuck = ["queued", "sending"].includes(c.status) && c.pending > 0 && Date.now() - new Date(c.last_activity_at || c.created_at).getTime() > 150000;
+  let reason = "";
+  if (c.status === "paused" && !DEMO) { const { data: pr } = await sb.from("wa_campaign_recipients").select("error").eq("campaign_id", id).like("error", "Paused:%").limit(1); reason = (pr?.[0]?.error || "").replace(/^Paused:\s*/, ""); }
+  if (bk.view !== "progress" || bk.campaign !== id) return;
+  const label = { queued: "Starting", sending: "Sending", done: "Finished", cancelled: "Stopped", paused: "Paused" }[c.status] || c.status;
+  const seg = (v, col) => (v ? `<i style="width:${((v / total) * 100).toFixed(2)}%;background:${col}"></i>` : "");
+  $("bk-progress").innerHTML = `<div class="card">
+    <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><div style="min-width:0"><h3 style="margin:0 0 2px">${esc(c.name || c.template_name)}</h3><div class="note"><span class="dot-inline" style="background:${BRANCH_COLORS[n.branch] || "#888"}"></span>${esc(n.branch || "")} · ${esc(c.template_name)} · ${new Date(c.created_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</div></div><span class="pill ${esc(c.status)}">${label}</span></div>
+    <div class="progress" style="margin-top:16px">${seg(c.read, "#53bdeb")}${seg(c.delivered, "#25d366")}${seg(c.sent, "#9be3b4")}${seg(c.failed, "#ea0038")}${seg(c.skipped, "#c5ccd0")}</div>
+    <div class="note" style="margin-top:6px">${nf(processed)} of ${nf(c.total)} done</div>
+    <div class="stats">${stat("Waiting", c.pending)}${stat("Sent", c.sent)}${stat("Delivered", c.delivered)}${stat("Read", c.read)}${stat("Failed", c.failed)}${stat("Skipped", c.skipped)}</div>
+    ${c.status === "paused" ? `<div class="status bad">Sending stopped: ${esc(reason || "a problem with this WhatsApp account")}. Fix that, then press Resume.</div>` : ""}
+    ${stuck ? `<div class="status warn">Nothing has moved for a few minutes. Press Resume to carry on.</div>` : ""}
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+      ${c.status === "paused" || stuck ? `<button class="btn" id="bp-resume">Resume</button>` : ""}
+      ${["queued", "sending", "paused"].includes(c.status) ? `<button class="btn ghost" id="bp-cancel">Stop sending</button>` : ""}
+      <button class="btn ghost" id="bp-report">Download report</button>
+    </div>
+    <p class="note" style="margin-top:12px">Sent becomes Delivered and Read as customers' phones get the message. The report lists every number with its result and the reason for any failure. Customers who reply STOP are skipped in future sends; START adds them back.</p></div>`;
+  if ($("bp-resume")) $("bp-resume").onclick = async () => { try { await api({ action: "bulk_resume", campaign_id: id }); toast("Resumed"); refreshProgress(); } catch (e) { toast(e.message, 7000); } };
+  if ($("bp-cancel")) $("bp-cancel").onclick = () => {
+    const bg = modal("Stop sending?", `<p>Customers who haven't received it yet won't get this message. Messages already sent stay sent.</p>`, `<button class="btn ghost" data-close2>Keep sending</button><button class="btn" id="bp-stop" style="background:var(--danger)">Stop</button>`);
+    bg.querySelector("[data-close2]").onclick = closeModal;
+    $("bp-stop").onclick = async () => { try { await api({ action: "bulk_cancel", campaign_id: id }); closeModal(); toast("Stopped"); refreshProgress(); } catch (e) { toast(e.message, 7000); } };
+  };
+  $("bp-report").onclick = () => downloadReport(id, c);
+}
+async function downloadReport(id, c) {
+  if (DEMO) { toast("Report download works in the live app"); return; }
+  let all = [];
+  for (let from = 0; ; from += 1000) {
+    const { data, error } = await sb.from("wa_campaign_recipients").select("phone,name,status,error,sent_at,params").eq("campaign_id", id).order("id").range(from, from + 999);
+    if (error) { toast(error.message); return; }
+    all = all.concat(data || []); if (!data || data.length < 1000) break;
+  }
+  const q = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+  const csv = ["Phone,Name,Status,Reason,Sent at,Values used"].concat(all.map((r) => [fmtPhone(r.phone), r.name, r.status, r.error, r.sent_at ? new Date(r.sent_at).toLocaleString() : "", (r.params || []).join(" | ")].map(q).join(","))).join("\r\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" }));
+  a.download = `${String(c.name || c.template_name || "bulk").replace(/[^\w-]+/g, "_")}_report.csv`; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+}
+async function renderHistory() {
+  const el = $("bk-history"); el.innerHTML = `<div class="card"><p class="note">Loading…</p></div>`;
+  let rows = [];
+  if (!DEMO) {
+    const { data, error } = await sb.from("wa_campaign_stats").select("*").order("created_at", { ascending: false }).limit(100);
+    if (error) { el.innerHTML = `<div class="card"><div class="status bad">${esc(error.message)}</div></div>`; return; }
+    rows = data || [];
+  }
+  if (bk.view !== "history") return;
+  if (!rows.length) { el.innerHTML = `<div class="card"><p class="note">Nothing sent in bulk yet. Use “New message” to start.</p></div>`; return; }
+  const label = { queued: "Starting", sending: "Sending", done: "Finished", cancelled: "Stopped", paused: "Paused" };
+  el.innerHTML = `<div class="card">` + rows.map((c) => { const n = numberById(c.phone_number_id); return `<div class="camp-row" data-id="${c.id}"><div style="min-width:0"><b>${esc(c.name || c.template_name)}</b><div class="note"><span class="dot-inline" style="background:${BRANCH_COLORS[n.branch] || "#888"}"></span>${esc(n.branch || "")} · ${new Date(c.created_at).toLocaleDateString([], { day: "numeric", month: "short" })} · ${nf(c.total)} customers · ${nf(c.delivered + c.read)} delivered${c.failed ? ` · ${nf(c.failed)} failed` : ""}</div></div><span class="pill ${esc(c.status)}">${label[c.status] || esc(c.status)}</span></div>`; }).join("") + `</div>`;
+  el.querySelectorAll(".camp-row").forEach((r) => (r.onclick = () => openProgress(Number(r.dataset.id))));
+}
+
 /* ===================== demo data (for previews only) ===================== */
 const DEMO_DATA = (() => {
   const now = Date.now(), iso = (mins) => new Date(now - mins * 60000).toISOString();
@@ -632,7 +1028,16 @@ const DEMO_DATA = (() => {
     { id: 14, conversation_id: 1, direction: "in", msg_type: "text", body: "Can I book a hair spa at 5 pm?", ts: iso(3), wa_message_id: "d" }];
   return { numbers, convs, msgs };
 })();
-async function demoApi(b) { if (b.action === "me") return { email: "joeljohnsontraders@gmail.com", role: "admin", token_ready: true }; if (b.action === "templates") return { templates: [{ name: "gdv_festive_offer", language: "en", category: "MARKETING", components: [{ type: "BODY", text: "Hi {{1}}, get {{2}} on hair and skin services till {{3}}." }] }] }; return { ok: true, id: Date.now() }; }
+async function demoApi(b) {
+  if (b.action === "me") return { email: "joeljohnsontraders@gmail.com", role: "admin", token_ready: true };
+  if (b.action === "templates") return { templates: [
+    { name: "hydra_facial_offer", language: "en", category: "MARKETING", bulk: { ok: true, bodyParams: 2 }, components: [{ type: "HEADER", format: "IMAGE" }, { type: "BODY", text: "Hi {{1}} 👋\n\nGlow up this season with our *Hydra Facial* at Green Trends Potheri — now just {{2}}.\n\nBook your slot today!" }, { type: "FOOTER", text: "Reply STOP to stop offers" }, { type: "BUTTONS", buttons: [{ type: "QUICK_REPLY", text: "Book now" }] }] },
+    { name: "gdv_festive_offer", language: "en", category: "MARKETING", bulk: { ok: true, bodyParams: 3 }, components: [{ type: "BODY", text: "Hi {{1}}, get {{2}} on hair and skin services till {{3}}." }] },
+    { name: "coupon_code", language: "en", category: "MARKETING", bulk: { ok: false, bodyParams: 1, reason: 'This template has a "COPY_CODE" button, which bulk send doesn\'t support yet.' }, components: [{ type: "BODY", text: "Use code {{1}}" }] }] };
+  if (b.action === "branch_health") return b.phone_number_id === "g" ? { payment_ok: false, issues: ["Guduvanchery: no payment card / currency on this WhatsApp account. Add one in Billing & payments → Messaging accounts → Green Trends Guduvanchery."], status: "CONNECTED", daily_limit: 2000, remaining_24h: 1994 } : { payment_ok: true, issues: [], status: "CONNECTED", name_status: "PENDING_REVIEW", daily_limit: 2000, remaining_24h: 1994 };
+  if (b.action === "bulk_start") return b.dry_run ? { ok: true, to_send: b.recipients.length, invalid: [], opted_out: 0 } : { ok: true, campaign_id: 1, to_send: b.recipients.length };
+  return { ok: true, id: Date.now() };
+}
 
 /* ===================== boot ===================== */
 (async function boot() {
