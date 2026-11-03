@@ -884,7 +884,11 @@ $("lg-form").onsubmit = async (e) => {
 };
 async function afterLogin() {
   try { me = await api({ action: "me" }); }
-  catch (e) { if (!DEMO) await sb.auth.signOut(); setTimeout(() => showLogin("This account is not allowed to use the inbox."), 50); return; }
+  catch (e) {
+    if (/not allowed/i.test(e.message)) { if (!DEMO) await sb.auth.signOut(); setTimeout(() => showLogin("This account is not allowed to use Green Trends Chats. Ask the admin."), 50); return; }
+    // network or server hiccup: keep the person signed in and try again
+    $("login").classList.add("hidden"); toast("Connecting…", 2500); setTimeout(afterLogin, 3000); return;
+  }
   $("login").classList.add("hidden"); $("app").classList.remove("hidden");
   $("rail-avatar").textContent = initials(me.email.split("@")[0]) || "GT";
   await loadAll();
