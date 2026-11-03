@@ -171,6 +171,7 @@ svg{display:block;flex:none}
 /* side panels (archived, starred, settings, quick replies) */
 .ph{height:64px;flex:none;display:flex;align-items:center;gap:18px;padding:0 16px 0 14px;background:var(--panel)}
 .ph h2{font-size:19px;font-weight:500;color:var(--text);flex:1}
+#panel-acts{display:flex;align-items:center;gap:2px}
 .pbody{flex:1;overflow-y:auto;background:var(--panel)}
 .set-me{display:flex;align-items:center;gap:16px;padding:14px 24px 20px;border-bottom:1px solid var(--line)}
 .set-item{display:flex;align-items:center;gap:22px;padding:0 24px;min-height:64px;cursor:pointer;color:var(--text);width:100%;text-align:left}
@@ -198,6 +199,10 @@ svg{display:block;flex:none}
 .star-item .who{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px}
 .star-item .bubble{display:inline-block;max-width:100%}
 
+.ptag{color:var(--muted);font-size:13.5px;font-weight:400}
+.save-bar{display:flex;align-items:center;gap:10px;padding:8px 12px 8px 20px;background:var(--panel);border-bottom:1px solid var(--line);font-size:13.5px;color:var(--text2);z-index:3;position:relative}
+.save-bar .grow{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.avatar img{display:block}
 /* ---------- main / chat ---------- */
 #main{flex:1;display:flex;flex-direction:column;min-width:0;position:relative;background:var(--chat)}
 #welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--header);border-bottom:6px solid var(--unread);text-align:center;padding:28px;color:var(--muted)}
@@ -560,6 +565,7 @@ table.mini td.ph{background:var(--sel-green);font-weight:500}
   <nav id="rail">
     <button class="rail-btn tip on" id="rail-chats" data-tip="Chats"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h10v2H7zm0-3h10v2H7zm0 6h7v2H7z"/></svg><span class="b hidden" id="rail-unread"></span></button>
     <button class="rail-btn tip" id="btn-bulk" data-tip="Bulk send"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18 11v2h4v-2h-4zm-2 6.61c.96.71 2.21 1.65 3.2 2.39.4-.53.8-1.07 1.2-1.6-.99-.74-2.24-1.68-3.2-2.4-.4.54-.8 1.08-1.2 1.61zM20.4 5.6c-.4-.53-.8-1.07-1.2-1.6-.99.74-2.24 1.68-3.2 2.4.4.53.8 1.07 1.2 1.6.96-.72 2.21-1.65 3.2-2.4zM4 9c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h1v4h2v-4h1l5 3V6L8 9H4zm11.5 3c0-1.33-.58-2.53-1.5-3.35v6.69c.92-.81 1.5-2.01 1.5-3.34z"/></svg></button>
+    <button class="rail-btn tip" id="rail-contacts" data-tip="Contacts"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 0H4v2h16V0zM4 24h16v-2H4v2zM20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 2.75c1.24 0 2.25 1.01 2.25 2.25s-1.01 2.25-2.25 2.25S9.75 10.24 9.75 9 10.76 6.75 12 6.75zM17 17H7v-1.5c0-1.67 3.33-2.5 5-2.5s5 .83 5 2.5V17z"/></svg></button>
     <button class="rail-btn tip" id="rail-qr" data-tip="Quick replies"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></button>
     <button class="rail-btn tip" id="rail-star" data-tip="Starred messages"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg></button>
     <button class="rail-btn tip" id="rail-arch" data-tip="Archived"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM6.24 5h11.52l.81.97H5.44l.8-.97zM5 19V8h14v11H5zm8.45-9h-2.9v3H8l4 4 4-4h-2.55z"/></svg></button>
@@ -590,7 +596,7 @@ table.mini td.ph{background:var(--sel-green);font-weight:500}
     <nav id="bnav">
       <button class="on" data-nav="chats"><span class="pill"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h10v2H7zm0-3h10v2H7zm0 6h7v2H7z"/></svg><span class="badge hidden" id="bnav-unread"></span></span>Chats</button>
       <button data-nav="bulk"><span class="pill"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18 11v2h4v-2h-4zm-2 6.61c.96.71 2.21 1.65 3.2 2.39.4-.53.8-1.07 1.2-1.6-.99-.74-2.24-1.68-3.2-2.4-.4.54-.8 1.08-1.2 1.61zM20.4 5.6c-.4-.53-.8-1.07-1.2-1.6-.99.74-2.24 1.68-3.2 2.4.4.53.8 1.07 1.2 1.6.96-.72 2.21-1.65 3.2-2.4zM4 9c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h1v4h2v-4h1l5 3V6L8 9H4zm11.5 3c0-1.33-.58-2.53-1.5-3.35v6.69c.92-.81 1.5-2.01 1.5-3.34z"/></svg></span>Bulk send</button>
-      <button data-nav="qr"><span class="pill"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></span>Quick replies</button>
+      <button data-nav="contacts"><span class="pill"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 0H4v2h16V0zM4 24h16v-2H4v2zM20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 2.75c1.24 0 2.25 1.01 2.25 2.25s-1.01 2.25-2.25 2.25S9.75 10.24 9.75 9 10.76 6.75 12 6.75zM17 17H7v-1.5c0-1.67 3.33-2.5 5-2.5s5 .83 5 2.5V17z"/></svg></span>Contacts</button>
       <button data-nav="settings"><span class="pill"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></span>Settings</button>
     </nav>
   </aside>
@@ -612,6 +618,7 @@ table.mini td.ph{background:var(--sel-green);font-weight:500}
           <button class="icon-btn" id="btn-cmenu" title="Menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7a2 2 0 1 0-.001-4.001A2 2 0 0 0 12 7zm0 2a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 9zm0 6a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 15z"/></svg></button>
         </div>
       </div>
+      <div class="save-bar hidden" id="save-bar"><span id="save-bar-t" class="grow"></span><button class="btn" id="save-bar-btn" style="padding:7px 16px;font-size:13.5px">Save contact</button><button class="icon-btn" id="save-bar-x" title="Hide" style="width:32px;height:32px"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button></div>
       <div class="float-day" id="float-day"><span></span></div>
       <div id="msgs"><div id="wall"></div><div id="msgs-inner"></div></div>
       <button id="scroll-down" class="off" title="Scroll to bottom"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg><span class="badge hidden" id="sd-badge"></span></button>
@@ -717,7 +724,11 @@ const linkify = fmtText;
 const fmtPhone = (w) => { const d = String(w || ""); return d.startsWith("91") && d.length === 12 ? `+91 ${d.slice(2, 7)} ${d.slice(7)}` : "+" + d; };
 const initials = (s) => { const t = String(s || "").replace(/[^A-Za-z0-9 ]/g, "").trim().split(/\s+/); return ((t[0]?.[0] || "") + (t[1]?.[0] || "")).toUpperCase() || "#"; };
 const colorFor = (s) => { const pal = ["#6a7175", "#e17076", "#7bc862", "#e5ca77", "#65aadd", "#a695e7", "#ee7aae", "#6ec9cb", "#faa774"]; let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return pal[h % pal.length]; };
-const nameOf = (c) => (c?.customer_name || "").trim() || fmtPhone(c?.customer_wa_id || "");
+const contacts = new Map(); // phone -> saved contact
+const contactOf = (c) => (c ? contacts.get(c.customer_wa_id) : null);
+const isSaved = (c) => !!contactOf(c);
+const nameOf = (c) => contactOf(c)?.name || (c?.customer_name || "").trim() || fmtPhone(c?.customer_wa_id || "");
+const profileTag = (c) => (c && !contactOf(c) && !(c.customer_name || "").trim() && c.profile_name ? "~" + c.profile_name : "");
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const store = {
   get(k, d) { try { const v = localStorage.getItem("gt-" + k); return v === null ? d : JSON.parse(v); } catch (_) { return d; } },
@@ -799,7 +810,8 @@ function tickHtml(m) {
   if (s === "sent") return `<span class="tick">${TICK.sent}</span>`;
   return `<span class="tick">${TICK.sending}</span>`;
 }
-const avatarHtml = (cls = "avatar big") => `<div class="${cls}" style="background:${document.documentElement.dataset.theme === "dark" ? "#6a7175" : "#dfe5e7"}">${I(P.person, 24)}</div>`;
+const avatarHtml = (cls = "avatar big", id = "") => `<div class="${cls}" ${id ? `id="${id}"` : ""} style="background:${document.documentElement.dataset.theme === "dark" ? "#6a7175" : "#dfe5e7"}">${I(P.person, 24)}</div>`;
+const avatarFor = (c, cls = "avatar big", id = "") => { const ph = contactOf(c)?.photo; return ph ? `<div class="${cls}" ${id ? `id="${id}"` : ""}><img src="${ph}" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover"></div>` : avatarHtml(cls, id); };
 
 /* ===================== state ===================== */
 let sb = null, session = null, me = null;
@@ -905,7 +917,7 @@ function upsertConv(row) {
   return convById.get(row.id);
 }
 async function loadAll() {
-  if (DEMO) { numbers = DEMO_DATA.numbers; setConvs(DEMO_DATA.convs.map((c) => ({ ...c }))); quickReplies = DEMO_DATA.qr; renderChips(); renderList(); return; }
+  if (DEMO) { numbers = DEMO_DATA.numbers; setConvs(DEMO_DATA.convs.map((c) => ({ ...c }))); quickReplies = DEMO_DATA.qr; await loadContacts(); renderChips(); renderList(); return; }
   const [{ data: n }, { data: c, error }, { data: q }] = await Promise.all([
     sb.from("wa_numbers").select("*").order("sort_order"),
     sb.from("wa_conversations").select("*").order("last_message_at", { ascending: false, nullsFirst: false }).limit(1000),
@@ -913,6 +925,7 @@ async function loadAll() {
   ]);
   if (error) { toast(error.message); return; }
   numbers = n || []; setConvs(c || []); quickReplies = q || [];
+  await loadContacts().catch(() => {});
   renderChips(); renderList();
   if (current) { current = convById.get(current.id) || current; renderHeader(); renderWindow(); }
 }
@@ -935,6 +948,11 @@ function subscribe() {
       const c = upsertConv(row);
       if (current && current.id === c.id) { renderHeader(); renderWindow(); }
       scheduleList();
+    })
+    .on("postgres_changes", { event: "*", schema: "public", table: "wa_contacts" }, (p) => {
+      if (p.eventType === "DELETE") { if (p.old?.phone) contacts.delete(p.old.phone); }
+      else if (p.new?.phone) contacts.set(p.new.phone, p.new);
+      contactChanged();
     })
     .on("postgres_changes", { event: "*", schema: "public", table: "wa_messages" }, (p) => {
       const row = p.new; if (!row?.id) return;
@@ -1001,8 +1019,9 @@ function previewHtml(c) {
 }
 function rowHtml(c) {
   const n = numberById(c.phone_number_id); const unread = isUnread(c); const muted = isMuted(c);
-  return `${avatarHtml()}<div class="body">
-    <div class="l1"><div class="name">${esc(nameOf(c))}</div><div class="time">${timeLabel(c.last_message_at)}</div></div>
+  const tag = profileTag(c);
+  return `${avatarFor(c)}<div class="body">
+    <div class="l1"><div class="name">${esc(nameOf(c))}${tag ? ` <span class="ptag">${esc(tag)}</span>` : ""}</div><div class="time">${timeLabel(c.last_message_at)}</div></div>
     <div class="l2"><div class="prev">${previewHtml(c)}</div><div class="rbadges">
       <span class="tag" style="background:${BRANCH_COLORS[n.branch] || "#888"}">${esc(n.branch || "")}</span>
       ${muted ? `<span class="ico">${I(P.mute, 18)}</span>` : ""}
@@ -1027,7 +1046,7 @@ function renderList() {
   $("q-clear").classList.toggle("hidden", !q);
   const archivedCount = convs.filter((c) => c.archived).length;
   const rows = convs.filter((c) => {
-    if (q) return (nameOf(c).toLowerCase().includes(q) || (qd.length >= 3 && c.customer_wa_id.includes(qd)));
+    if (q) return (nameOf(c).toLowerCase().includes(q) || (c.profile_name || "").toLowerCase().includes(q) || (qd.length >= 3 && c.customer_wa_id.includes(qd)));
     if (c.archived) return false;
     if (filter === "unread") return isUnread(c) || (current && current.id === c.id);
     if (filter === "labels") return (c.labels || []).includes(labelFilter);
@@ -1162,9 +1181,9 @@ function longPress(root, selector, fn) {
 /* ===================== navigation (rail, bottom nav, back button) ===================== */
 function setRail(which) {
   document.querySelectorAll("#rail .rail-btn").forEach((b) => b.classList.remove("on"));
-  const map = { chats: "rail-chats", bulk: "btn-bulk", qr: "rail-qr", starred: "rail-star", archived: "rail-arch", settings: "rail-settings" };
+  const map = { chats: "rail-chats", bulk: "btn-bulk", qr: "rail-qr", starred: "rail-star", archived: "rail-arch", settings: "rail-settings", contacts: "rail-contacts" };
   $(map[which] || "rail-chats")?.classList.add("on");
-  document.querySelectorAll("#bnav button").forEach((b) => b.classList.toggle("on", b.dataset.nav === (["chats", "bulk", "qr", "settings"].includes(which) ? which : "chats")));
+  document.querySelectorAll("#bnav button").forEach((b) => b.classList.toggle("on", b.dataset.nav === (["chats", "bulk", "contacts", "settings"].includes(which) ? which : "chats")));
 }
 function pushNav() { if (isMobile()) { history.pushState({ gt: ++navDepth }, ""); } }
 function navBack(fallback) { if (isMobile() && navDepth > 0) history.back(); else fallback(); }
@@ -1183,6 +1202,7 @@ function hideBulkRaw() { if (typeof bk !== "undefined") clearInterval(bk.timer);
 $("rail-chats").onclick = () => goChats();
 function goChats() { if (!tabOpen()) { setRail("chats"); return; } if (isMobile() && navDepth > 0) history.back(); else { hidePanelRaw(); hideBulkRaw(); setRail("chats"); } }
 $("rail-qr").onclick = () => openPanel("qr");
+$("rail-contacts").onclick = () => openPanel("contacts");
 $("rail-star").onclick = () => openPanel("starred");
 $("rail-arch").onclick = () => openPanel("archived");
 $("rail-settings").onclick = () => openPanel("settings");
@@ -1199,6 +1219,7 @@ $("btn-menu").onclick = (e) => {
   showMenu([
     { label: "New chat", icon: P.unread, act: () => $("btn-new").click() },
     { label: "Bulk send", icon: "M18 11v2h4v-2h-4zm-2 6.61c.96.71 2.21 1.65 3.2 2.39.4-.53.8-1.07 1.2-1.6-.99-.74-2.24-1.68-3.2-2.4-.4.54-.8 1.08-1.2 1.61zM20.4 5.6c-.4-.53-.8-1.07-1.2-1.6-.99.74-2.24 1.68-3.2 2.4.4.53.8 1.07 1.2 1.6.96-.72 2.21-1.65 3.2-2.4zM4 9c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h1v4h2v-4h1l5 3V6L8 9H4z", act: () => openBulk() },
+    { label: "Contacts", icon: P.person, act: () => openPanel("contacts") },
     { label: "Archived", icon: P.archive, act: () => openPanel("archived") },
     { label: "Starred messages", icon: P.starO, act: () => openPanel("starred") },
     { label: "Quick replies", icon: P.bolt, act: () => openPanel("qr") },
@@ -1224,9 +1245,9 @@ function openPanel(kind) {
   panelKind = kind; setRail(kind);
   $("v-panel").classList.remove("hidden");
   $("panel-acts").innerHTML = "";
-  const titles = { archived: "Archived", starred: "Starred messages", settings: "Settings", qr: "Quick replies", staff: "Staff & access" };
+  const titles = { archived: "Archived", starred: "Starred messages", settings: "Settings", qr: "Quick replies", staff: "Staff & access", contacts: "Contacts" };
   $("panel-title").textContent = titles[kind] || "";
-  ({ archived: renderArchived, starred: renderStarred, settings: renderSettings, qr: renderQuickReplies, staff: renderStaff })[kind]?.();
+  $("panel-body").innerHTML = ""; ({ archived: renderArchived, starred: renderStarred, settings: renderSettings, qr: renderQuickReplies, staff: renderStaff, contacts: renderContactsPanel })[kind]?.();
 }
 function closePanel(fromPop) {
   if ($("v-panel").classList.contains("hidden")) return;
@@ -1374,9 +1395,10 @@ function inWindow(c) { return c && c.last_inbound_at && Date.now() - new Date(c.
 function renderHeader() {
   if (!current) return;
   const n = numberById(current.phone_number_id);
-  $("c-avatar").outerHTML = avatarHtml("avatar").replace('class="avatar"', 'class="avatar" id="c-avatar"');
+  $("c-avatar").outerHTML = avatarFor(current, "avatar", "c-avatar");
   $("c-name").textContent = nameOf(current);
-  $("c-sub").textContent = `${current.customer_name ? fmtPhone(current.customer_wa_id) + " · " : ""}via Green Trends ${n.branch || ""}${isMuted(current) ? " · muted" : ""}`;
+  const tag = profileTag(current); const named = nameOf(current) !== fmtPhone(current.customer_wa_id);
+  $("c-sub").textContent = `${tag ? tag + " · " : ""}${named ? fmtPhone(current.customer_wa_id) + " · " : ""}via Green Trends ${n.branch || ""}${isMuted(current) ? " · muted" : ""}`;
 }
 function renderWindow() {
   if (!current) return;
@@ -1399,7 +1421,7 @@ async function openChat(id) {
   current = c; replyTo = null; $("reply-prev").classList.add("hidden");
   closePopups(); closePreview(true);
   $("welcome").classList.add("hidden"); $("chat").classList.remove("hidden");
-  renderHeader(); renderWindow();
+  renderHeader(); renderWindow(); renderSaveBar();
   document.body.classList.add("in-chat");
   if (!wasOpen) pushNav();
   if (!isMobile()) history.replaceState(history.state, "", "#chat-" + id);
@@ -1893,15 +1915,17 @@ function renderContactInfo() {
   const left = open ? 24 * 3600e3 - (Date.now() - new Date(c.last_inbound_at).getTime()) : 0;
   const body = $("info-body");
   body.innerHTML = `
-    <div class="ci-top">${avatarHtml("avatar huge")}<div class="nm">${esc(nameOf(c))}<button class="icon-btn" id="ci-rename" title="Edit name" style="width:32px;height:32px">${I(P.edit, 18)}</button></div>
-      <div class="ph2">${esc(fmtPhone(c.customer_wa_id))}</div>
-      <div class="ci-acts"><a href="tel:+${esc(c.customer_wa_id)}" style="text-decoration:none"><button>${I(P.phone, 22)}Call</button></a><button id="ci-copy">${I(P.copy, 22)}Copy</button><button id="ci-search">${I(P.search, 22)}Search</button></div></div>
+    <div class="ci-top"><div id="ci-av" style="cursor:${contactOf(c)?.photo ? "pointer" : "default"}">${avatarFor(c, "avatar huge")}</div><div class="nm">${esc(nameOf(c))}${isSaved(c) ? `<button class="icon-btn" id="ci-rename" title="Edit contact" style="width:32px;height:32px">${I(P.edit, 18)}</button>` : ""}</div>
+      <div class="ph2">${nameOf(c) !== fmtPhone(c.customer_wa_id) ? esc(fmtPhone(c.customer_wa_id)) : ""}${profileTag(c) ? `<div style="font-size:14.5px;margin-top:2px">${esc(profileTag(c))} <span style="font-size:12.5px">(WhatsApp name)</span></div>` : ""}</div>
+      <div class="ci-acts"><a href="tel:+${esc(c.customer_wa_id)}" style="text-decoration:none"><button>${I(P.phone, 22)}Call</button></a><button id="ci-save">${I(isSaved(c) ? P.edit : P.plus, 22)}${isSaved(c) ? "Edit" : "Save"}</button><button id="ci-copy">${I(P.copy, 22)}Copy</button><button id="ci-search">${I(P.search, 22)}Search</button></div></div>
+    ${isSaved(c) && (contactOf(c).email || contactOf(c).birthday) ? `<div class="ci-sec">${contactOf(c).email ? `<h3>Email</h3><div class="val" style="margin-bottom:${contactOf(c).birthday ? 14 : 0}px"><a href="mailto:${esc(contactOf(c).email)}">${esc(contactOf(c).email)}</a></div>` : ""}${contactOf(c).birthday ? `<h3>Birthday</h3><div class="val">🎂 ${esc(new Date(contactOf(c).birthday + "T00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long" }))}</div>` : ""}</div>` : ""}
     <div class="ci-sec"><h3>Branch</h3><div class="val"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${BRANCH_COLORS[n.branch] || "#888"};margin-right:8px"></span>Green Trends ${esc(n.branch || "")} · ${esc(n.display_phone || "")}</div></div>
     <div class="ci-sec"><h3>Reply window</h3><div class="val" style="color:${open ? "var(--green-d)" : "var(--muted)"}">${open ? `Open — closes in ${Math.floor(left / 3600e3)} h ${Math.floor((left % 3600e3) / 60000)} min` : "Closed — only approved templates can be sent until the customer messages again"}</div></div>
     <div class="ci-sec"><h3>Labels</h3><div class="lab-chips" id="ci-labels">${LABELS.map((l) => `<button data-l="${esc(l.name)}" class="${(c.labels || []).includes(l.name) ? "on" : ""}"><i style="background:${l.color}"></i>${esc(l.name)}</button>`).join("")}</div></div>
     <div class="ci-sec"><h3><span>Notes</span><span id="ci-saved" style="font-size:12px"></span></h3><textarea id="ci-notes" placeholder="e.g. Prefers stylist Priya · allergic to ammonia · birthday 12 Aug">${esc(c.notes || "")}</textarea></div>
     <div class="ci-sec"><h3><span>Media, links and docs</span><span id="ci-mcount"></span></h3><div class="media-grid" id="ci-media"><div class="cell"><div class="spinner"></div></div></div></div>
     <div style="border-top:8px solid var(--app)"></div>
+    <button class="ci-row" id="ci-phone">${I(P.dl, 22)}<span class="grow">${isSaved(c) ? "Save to phone contacts" : "Save contact"}</span></button>
     <button class="ci-row" id="ci-star">${I(P.starO, 22)}<span class="grow">Starred messages</span></button>
     <label class="ci-row">${I(P.mute, 22)}<span class="grow">Mute notifications</span><span class="switch"><input type="checkbox" id="ci-mute" ${isMuted(c) ? "checked" : ""}><i></i></span></label>
     <button class="ci-row" id="ci-pin">${I(P.pin, 22)}<span class="grow">${c.pinned_at ? "Unpin chat" : "Pin chat"}</span></button>
@@ -1909,7 +1933,11 @@ function renderContactInfo() {
     <button class="ci-row" id="ci-export">${I(P.export, 22)}<span class="grow">Export chat</span></button>
     <button class="ci-row" id="ci-unread">${I(P.unread, 22)}<span class="grow">Mark as unread</span></button>
     <div style="height:40px"></div>`;
-  $("ci-rename").onclick = () => renameContact(c);
+  const editC = () => contactEditor(c.customer_wa_id, { name: c.profile_name || c.customer_name || "" });
+  if ($("ci-rename")) $("ci-rename").onclick = editC;
+  $("ci-save").onclick = editC;
+  $("ci-phone").onclick = () => isSaved(c) ? saveToPhone(contactOf(c)) : editC();
+  $("ci-av").onclick = () => { const ph = contactOf(c)?.photo; if (ph) openViewer(null, ph, "image"); };
   $("ci-copy").onclick = () => navigator.clipboard?.writeText("+" + c.customer_wa_id).then(() => toast("Number copied"));
   $("ci-search").onclick = () => openInfo("search");
   $("ci-labels").onclick = (e) => { const b = e.target.closest("[data-l]"); if (!b) return; const set = new Set(c.labels || []); set.has(b.dataset.l) ? set.delete(b.dataset.l) : set.add(b.dataset.l); b.classList.toggle("on"); convUpdate(c, { labels: [...set] }); };
@@ -1937,12 +1965,6 @@ async function loadInfoMedia(c) {
     if (m.msg_type === "document" || !m.media_id) return;
     try { const u = await getMediaUrl(m.media_id); cell.innerHTML = m.msg_type === "image" ? `<img src="${u}" alt="">` : `<video src="${u}" muted preload="metadata"></video>`; } catch (_) { cell.textContent = "Expired"; }
   });
-}
-function renameContact(c) {
-  const bg = modal("Edit name", `<label class="field"><span>Name for ${esc(fmtPhone(c.customer_wa_id))}</span><input id="rn-v" value="${esc(c.customer_name || "")}" maxlength="80"></label>`, `<button class="btn ghost" data-close2>Cancel</button><button class="btn" id="rn-ok">Save</button>`);
-  bg.querySelector("[data-close2]").onclick = closeModal; $("rn-v").focus(); $("rn-v").select();
-  const save = async () => { const name = $("rn-v").value.trim(); closeModal(); try { await api({ action: "rename", conversation_id: c.id, name }); c.customer_name = name; listCache.delete(c.id); scheduleList(); renderHeader(); if (infoKind === "contact") renderContactInfo(); toast("Name saved"); } catch (e) { toast(e.message); } };
-  $("rn-ok").onclick = save; $("rn-v").onkeydown = (e) => { if (e.key === "Enter") save(); };
 }
 function renderChatSearch() {
   const body = $("info-body");
@@ -1985,7 +2007,7 @@ let viewerUrl = null, viewerName = "";
 function openViewer(m, url, kind) {
   if (!url) return;
   viewerUrl = url; viewerName = m?.media_filename || `GT-${m?.msg_type || "image"}-${m?.id || Date.now()}.${kind === "video" ? "mp4" : "jpg"}`;
-  $("v-avatar").outerHTML = avatarHtml("avatar").replace('class="avatar"', 'class="avatar" id="v-avatar"');
+  $("v-avatar").outerHTML = m?.direction === "out" ? avatarHtml("avatar", "v-avatar") : avatarFor(current, "avatar", "v-avatar");
   $("v-title").textContent = m?.direction === "out" ? "You" : nameOf(current);
   $("v-sub").textContent = m ? fullTime(m.ts) : "";
   $("v-stage").innerHTML = kind === "video" ? `<video src="${url}" controls autoplay></video>` : `<img src="${url}" alt="">`;
@@ -2073,7 +2095,7 @@ async function templatePicker(phoneId, onSend) {
   $("tp-list").querySelectorAll(".tpl-item").forEach((el) => (el.onclick = () => {
     $("tp-list").querySelectorAll(".tpl-item").forEach((x) => x.classList.remove("on")); el.classList.add("on");
     chosen = list[Number(el.dataset.i)]; const n = chosen.bulk?.bodyParams ?? paramCount(chosen); const hdr = tplHeader(chosen);
-    let ph = ""; for (let i = 1; i <= n; i++) ph += `<label class="field"><span>Value for {{${i}}}</span><input data-p="${i}" ${i === 1 && current?.customer_name ? `value="${esc(current.customer_name.split(" ")[0])}"` : ""}></label>`;
+    let ph = ""; for (let i = 1; i <= n; i++) ph += `<label class="field"><span>Value for {{${i}}}</span><input data-p="${i}" ${i === 1 && current && nameOf(current) !== fmtPhone(current.customer_wa_id) ? `value="${esc(nameOf(current).split(" ")[0])}"` : ""}></label>`;
     if (hdr && hdr.format === "IMAGE") ph += `<label class="field"><span>Header image link (https://…jpg/png)</span><input id="tp-img"></label>`;
     $("tp-params").innerHTML = ph ? `<div style="margin-top:14px">${ph}</div>` : "";
     $("tp-send").disabled = false;
@@ -2099,11 +2121,20 @@ $("btn-tpl").onclick = $("btn-tpl2").onclick = () => {
 function newChatFlow(from, to) {
   const opts = numbers.map((n) => `<option value="${esc(n.phone_number_id)}" ${n.phone_number_id === from ? "selected" : ""}>Green Trends ${esc(n.branch)} · ${esc(n.display_phone)}</option>`).join("");
   const bg = modal("New chat", `<label class="field"><span>Send from</span><select id="nc-from">${opts}</select></label>
-    <label class="field"><span>Customer's WhatsApp number</span><input id="nc-to" inputmode="tel" placeholder="98765 43210" value="${esc(to || "")}"></label>
+    <label class="field"><span>Customer's WhatsApp number or saved name</span><input id="nc-to" placeholder="98765 43210 or name" value="${esc(to || "")}" autocomplete="off"></label>
+    <div id="nc-sugg" style="max-height:200px;overflow-y:auto;margin:-8px 0 12px"></div>
     <p class="note">The first message to a customer must be an approved template. Only message customers who agreed to hear from Green Trends.</p>`,
     `<button class="btn ghost" data-close2>Cancel</button><button class="btn" id="nc-next">Next</button>`);
   bg.querySelector("[data-close2]").onclick = closeModal;
   $("nc-to").focus();
+  const sugg = () => {
+    const q = $("nc-to").value.trim().toLowerCase(); const qd = q.replace(/\D/g, "");
+    if (!q || (qd.length >= 10 && qd.length === q.replace(/[\s+-]/g, "").length)) { $("nc-sugg").innerHTML = ""; return; }
+    const list = [...contacts.values()].filter((c) => c.name.toLowerCase().includes(q) || (qd.length >= 3 && c.phone.includes(qd))).slice(0, 8);
+    $("nc-sugg").innerHTML = list.map((c) => `<div class="row" data-ph="${esc(c.phone)}" style="height:56px;margin:0">${avatarFor({ customer_wa_id: c.phone }, "avatar")}<div class="body" style="border:0"><div class="l1"><div class="name" style="font-size:15px">${esc(c.name)}</div></div><div class="l2"><div class="prev"><span>${esc(fmtPhone(c.phone))}</span></div></div></div></div>`).join("");
+  };
+  $("nc-to").oninput = sugg; sugg();
+  $("nc-sugg").onclick = (e) => { const r = e.target.closest("[data-ph]"); if (!r) return; const ph = r.dataset.ph; $("nc-to").value = ph.startsWith("91") && ph.length === 12 ? ph.slice(2) : ph; $("nc-sugg").innerHTML = ""; };
   const go = () => {
     const f = $("nc-from").value, t = $("nc-to").value.replace(/\D/g, "");
     if (t.length < 10) { toast("Enter a valid number"); return; }
@@ -2116,6 +2147,163 @@ function newChatFlow(from, to) {
   $("nc-next").onclick = go; $("nc-to").onkeydown = (e) => { if (e.key === "Enter") go(); };
 }
 $("btn-new").onclick = $("fab").onclick = () => newChatFlow(filter.length > 10 ? filter : numbers[0]?.phone_number_id);
+
+/* ===================== saved contacts ===================== */
+async function loadContacts() {
+  if (DEMO) { for (const ct of DEMO_DATA.contacts) contacts.set(ct.phone, ct); return; }
+  const { data } = await sb.from("wa_contacts").select("phone,name,email,birthday,saved_by,updated_at").limit(10000);
+  const keepPhotos = new Map([...contacts].map(([k, v]) => [k, v.photo]));
+  contacts.clear(); for (const ct of data || []) contacts.set(ct.phone, { ...ct, photo: keepPhotos.get(ct.phone) || null });
+  // photos come second so names show instantly
+  sb.from("wa_contacts").select("phone,photo").not("photo", "is", null).limit(10000).then(({ data: ph }) => {
+    let changed = false;
+    for (const r of ph || []) { const ct = contacts.get(r.phone); if (ct && ct.photo !== r.photo) { ct.photo = r.photo; changed = true; } }
+    if (changed) { listCache.clear(); scheduleList(); if (current) renderHeader(); }
+  });
+}
+function contactChanged() {
+  listCache.clear(); scheduleList();
+  if (current) { renderHeader(); renderSaveBar(); if (infoKind === "contact") renderContactInfo(); }
+  if (panelKind === "contacts") renderContactsPanel();
+}
+function renderSaveBar() {
+  const show = current && !isSaved(current) && !store.get("savebar-x-" + current.customer_wa_id, false);
+  $("save-bar").classList.toggle("hidden", !show);
+  if (show) $("save-bar-t").textContent = current.profile_name ? `~${current.profile_name} isn't in your contacts` : "This number isn't in your contacts";
+}
+$("save-bar-btn").onclick = () => current && contactEditor(current.customer_wa_id, { name: current.profile_name || current.customer_name || "" });
+$("save-bar-x").onclick = () => { if (!current) return; store.set("savebar-x-" + current.customer_wa_id, true); renderSaveBar(); };
+
+// shrink a picked photo to a 256 px square JPEG (small, quick to load everywhere)
+function squarePhoto(file) {
+  return new Promise((res, rej) => {
+    const img = new Image(); const u = URL.createObjectURL(file);
+    img.onload = () => {
+      const s = Math.min(img.naturalWidth, img.naturalHeight); const c = document.createElement("canvas"); c.width = c.height = 256;
+      c.getContext("2d").drawImage(img, (img.naturalWidth - s) / 2, (img.naturalHeight - s) / 2, s, s, 0, 0, 256, 256);
+      URL.revokeObjectURL(u); res(c.toDataURL("image/jpeg", 0.82));
+    };
+    img.onerror = () => { URL.revokeObjectURL(u); rej(new Error("That file isn't a photo")); };
+    img.src = u;
+  });
+}
+function contactEditor(phone, preset = {}) {
+  const isNewNumber = !phone;
+  const ex = phone ? contacts.get(phone) : null;
+  let photo = ex?.photo ?? null; let photoChanged = false;
+  const photoHtml = () => photo ? `<img src="${photo}" alt="" style="width:100%;height:100%;object-fit:cover">` : I(P.person, 64);
+  const bg = modal(ex ? "Edit contact" : "Save contact", `
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:18px">
+      <button type="button" id="ce-photo" class="avatar" style="width:112px;height:112px;background:${document.documentElement.dataset.theme === "dark" ? "#6a7175" : "#dfe5e7"};cursor:pointer;position:relative" title="Add photo">${photoHtml()}</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><button type="button" class="link" id="ce-pick">${photo ? "Change photo" : "Add photo"}</button>${isMobile() ? `<button type="button" class="link" id="ce-cam">Take photo</button>` : ""}<button type="button" class="link ${photo ? "" : "hidden"}" id="ce-rm" style="color:var(--danger)">Remove</button></div>
+      <input type="file" id="ce-file" class="hidden" accept="image/*"><input type="file" id="ce-camf" class="hidden" accept="image/*" capture="user">
+    </div>
+    <label class="field"><span>Name</span><input id="ce-name" value="${esc(ex?.name || preset.name || "")}" maxlength="80" placeholder="Customer name" autocomplete="off"></label>
+    <label class="field"><span>Phone</span><input id="ce-phone" inputmode="tel" value="${esc(phone ? fmtPhone(phone) : "")}" ${phone ? "readonly" : ""} placeholder="98765 43210"></label>
+    <label class="field"><span>Email (optional)</span><input id="ce-email" type="email" value="${esc(ex?.email || "")}" placeholder="name@example.com"></label>
+    <label class="field"><span>Birthday (optional)</span><input id="ce-bday" type="date" value="${esc(ex?.birthday || "")}"></label>
+    <label style="display:flex;align-items:center;gap:12px;font-size:14.5px;cursor:pointer"><input type="checkbox" id="ce-phonebook" ${isMobile() ? "checked" : ""} style="width:18px;height:18px;accent-color:var(--green)">Also save to this phone's contacts</label>
+    <p class="note" style="margin-top:12px">Saved contacts are shared with all Green Trends staff who can see this customer. WhatsApp doesn't give businesses customers' own profile photos, so add one here if you like.</p>`,
+    `${ex ? `<button class="btn ghost" id="ce-del" style="color:var(--danger);margin-right:auto">Delete</button>` : ""}<button class="btn ghost" data-close2>Cancel</button><button class="btn" id="ce-save">Save</button>`);
+  bg.querySelector("[data-close2]").onclick = closeModal;
+  const setPhoto = (p) => { photo = p; photoChanged = true; $("ce-photo").innerHTML = photoHtml(); $("ce-rm").classList.toggle("hidden", !photo); $("ce-pick").textContent = photo ? "Change photo" : "Add photo"; };
+  const onFile = async (e) => { const f = e.target.files[0]; e.target.value = ""; if (!f) return; try { setPhoto(await squarePhoto(f)); } catch (err) { toast(err.message); } };
+  $("ce-file").onchange = onFile; if ($("ce-camf")) $("ce-camf").onchange = onFile;
+  $("ce-photo").onclick = $("ce-pick").onclick = () => $("ce-file").click();
+  if ($("ce-cam")) $("ce-cam").onclick = () => $("ce-camf").click();
+  $("ce-rm").onclick = () => setPhoto(null);
+  if (!phone) $("ce-phone").focus(); else { $("ce-name").focus(); $("ce-name").select(); }
+  $("ce-save").onclick = async () => {
+    const num = phone || (() => { let d = $("ce-phone").value.replace(/\D/g, ""); if (d.length === 10) d = "91" + d; return d.length >= 11 && d.length <= 15 ? d : null; })();
+    if (!num) { toast("Enter a valid phone number"); return; }
+    const name = $("ce-name").value.trim(); if (!name) { toast("Type a name"); $("ce-name").focus(); return; }
+    const payload = { action: "contact_save", phone: num, name, email: $("ce-email").value.trim(), birthday: $("ce-bday").value || "" };
+    if (photoChanged || !ex) payload.photo = photo;
+    const btn = $("ce-save"); btn.disabled = true; btn.textContent = "Saving…";
+    try {
+      const r = await api(payload);
+      const ct = r.contact || { phone: num, name, email: payload.email || null, birthday: payload.birthday || null, photo };
+      contacts.set(num, ct);
+      const toPhone = $("ce-phonebook").checked;
+      closeModal(); toast(ex ? "Contact updated" : "Contact saved"); contactChanged();
+      if (toPhone) saveToPhone(ct);
+    } catch (e) { toast(e.message, 6000); btn.disabled = false; btn.textContent = "Save"; }
+  };
+  if ($("ce-del")) $("ce-del").onclick = () => confirmModal(`Delete ${ex.name}?`, "The saved name and photo will be removed for all staff. Chats are not deleted.", "Delete", async () => {
+    try { await api({ action: "contact_delete", phone }); contacts.delete(phone); toast("Contact deleted"); contactChanged(); } catch (e) { toast(e.message, 5000); }
+  });
+  if (isNewNumber) return;
+}
+// vCard so the phone's own Contacts app can save it (photo included)
+function vcardOf(ct) {
+  const v = (s) => String(s ?? "").replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/([,;])/g, "\\$1");
+  const lines = ["BEGIN:VCARD", "VERSION:3.0", `FN:${v(ct.name)}`, `N:${v(ct.name)};;;;`, `TEL;TYPE=CELL:+${ct.phone}`];
+  if (ct.email) lines.push(`EMAIL;TYPE=INTERNET:${v(ct.email)}`);
+  if (ct.birthday) lines.push(`BDAY:${ct.birthday}`);
+  const branches = [...new Set(convs.filter((c) => c.customer_wa_id === ct.phone).map((c) => numberById(c.phone_number_id).branch).filter(Boolean))];
+  lines.push(`NOTE:${v("Green Trends customer" + (branches.length ? " · " + branches.join(", ") : ""))}`);
+  const m = (ct.photo || "").match(/^data:image\/(\w+);base64,(.+)$/);
+  if (m) lines.push(`PHOTO;ENCODING=b;TYPE=${m[1].toUpperCase()}:${m[2]}`);
+  lines.push("END:VCARD");
+  // fold long lines (vCard rule) so every phone reads it
+  return lines.map((l) => { if (l.length <= 74) return l; const out = [l.slice(0, 74)]; for (let i = 74; i < l.length; i += 73) out.push(" " + l.slice(i, i + 73)); return out.join("\r\n"); }).join("\r\n");
+}
+async function saveToPhone(ctOrList) {
+  const list = Array.isArray(ctOrList) ? ctOrList : [ctOrList];
+  if (!list.length) { toast("No saved contacts yet"); return; }
+  if (list.some((c) => contacts.get(c.phone) && !c.photo) && !DEMO) await loadContactPhotos(list.map((c) => c.phone));
+  const text = list.map((c) => vcardOf(contacts.get(c.phone) || c)).join("\r\n") + "\r\n";
+  const name = list.length === 1 ? `${list[0].name.replace(/[^\w .-]/g, "") || "contact"}.vcf` : "Green Trends contacts.vcf";
+  const file = new File([text], name, { type: "text/vcard" });
+  try { if (isMobile() && navigator.canShare?.({ files: [file] })) { await navigator.share({ files: [file], title: list.length === 1 ? list[0].name : "Green Trends contacts" }); return; } } catch (e) { if (e.name === "AbortError") return; }
+  const a = document.createElement("a"); a.href = URL.createObjectURL(file); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+  toast(isMobile() ? "Open the downloaded file to add it to your contacts" : "Contact file downloaded (.vcf) — open it to add to contacts", 5000);
+}
+async function loadContactPhotos(phones) {
+  const { data } = await sb.from("wa_contacts").select("phone,photo").in("phone", phones.slice(0, 500)).not("photo", "is", null);
+  for (const r of data || []) { const ct = contacts.get(r.phone); if (ct) ct.photo = r.photo; }
+}
+function renderContactsPanel() {
+  $("panel-acts").innerHTML = `<button class="icon-btn" id="ct-add" title="New contact">${I(P.plus, 24)}</button><button class="icon-btn" id="ct-more" title="More">${I("M12 7a2 2 0 1 0-.001-4.001A2 2 0 0 0 12 7zm0 2a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 9zm0 6a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 15z", 24)}</button>`;
+  $("ct-add").onclick = () => contactEditor(null);
+  $("ct-more").onclick = (e) => { const r = e.currentTarget.getBoundingClientRect(); showMenu([{ label: "Save all to phone (.vcf)", icon: P.dl, act: () => saveToPhone([...contacts.values()].sort((a, b) => a.name.localeCompare(b.name))) }], { x: r.right, y: r.bottom }); };
+  const body = $("panel-body");
+  if (!$("ct-q")) body.innerHTML = `<div class="search" style="padding:8px 12px"><label>${I(P.search, 20)}<input id="ct-q" placeholder="Search name or number" autocomplete="off"></label></div><div id="ct-list"></div>`;
+  $("ct-q").oninput = drawContacts;
+  drawContacts();
+  $("ct-list").onclick = (e) => {
+    const r = e.target.closest("[data-ph]"); if (!r) return;
+    if (e.target.closest("[data-edit]")) { contactEditor(r.dataset.ph); return; }
+    openContact(r.dataset.ph, e);
+  };
+}
+function drawContacts() {
+  const q = ($("ct-q")?.value || "").trim().toLowerCase(), qd = q.replace(/\D/g, "");
+  const list = [...contacts.values()].filter((c) => !q || c.name.toLowerCase().includes(q) || (qd.length >= 3 && c.phone.includes(qd))).sort((a, b) => a.name.localeCompare(b.name));
+  const unsaved = !q ? [] : convs.filter((c) => !contacts.has(c.customer_wa_id) && ((c.profile_name || "").toLowerCase().includes(q) || (qd.length >= 3 && c.customer_wa_id.includes(qd))));
+  let h = `<button class="set-item" id="ct-new" style="min-height:60px">${I(P.plus, 24, 'style="color:var(--green)"')}<div class="grow"><div class="t" style="color:var(--green-d)">New contact</div></div></button>`;
+  h += `<div style="padding:14px 28px 6px;color:var(--green-d);font-size:14px">${list.length ? `${list.length} saved contact${list.length === 1 ? "" : "s"}` : "No saved contacts yet"}</div>`;
+  let last = "";
+  for (const ct of list) {
+    const L = (ct.name[0] || "#").toUpperCase(); if (!q && L !== last) { h += `<div style="padding:10px 28px 2px;color:var(--muted);font-size:13px">${esc(L)}</div>`; last = L; }
+    const br = [...new Set(convs.filter((c) => c.customer_wa_id === ct.phone).map((c) => numberById(c.phone_number_id).branch).filter(Boolean))];
+    h += `<div class="row" data-ph="${esc(ct.phone)}" style="height:66px">${avatarFor({ customer_wa_id: ct.phone }, "avatar big")}<div class="body"><div class="l1"><div class="name" style="font-size:16px">${esc(ct.name)}</div></div><div class="l2"><div class="prev"><span>${esc(fmtPhone(ct.phone))}${br.length ? " · " + esc(br.join(", ")) : ""}</span></div><button class="icon-btn" data-edit="1" title="Edit" style="width:32px;height:32px">${I(P.edit, 18)}</button></div></div></div>`;
+  }
+  if (unsaved.length) { h += `<div style="padding:16px 28px 6px;color:var(--muted);font-size:14px">Not saved</div>`; for (const c of unsaved) h += `<div class="row" data-ph="${esc(c.customer_wa_id)}" style="height:66px">${avatarFor(c, "avatar big")}<div class="body"><div class="l1"><div class="name" style="font-size:16px">${esc(fmtPhone(c.customer_wa_id))} <span class="ptag">~${esc(c.profile_name || "")}</span></div></div></div></div>`; }
+  $("ct-list").innerHTML = h;
+  $("ct-new").onclick = () => contactEditor(null);
+}
+function openContact(phone, ev) {
+  const cs = convs.filter((c) => c.customer_wa_id === phone);
+  if (cs.length === 1) { openChat(cs[0].id); if (isMobile()) closePanel(); return; }
+  if (cs.length > 1) {
+    const r = ev?.target?.closest?.(".row")?.getBoundingClientRect() || { left: 100, bottom: 200 };
+    showMenu(cs.map((c) => ({ label: `Chat via ${numberById(c.phone_number_id).branch}`, html: `<span style="width:10px;height:10px;border-radius:50%;background:${BRANCH_COLORS[numberById(c.phone_number_id).branch] || "#888"};display:block"></span>`, act: () => openChat(c.id) })), { x: r.left + 60, y: r.bottom - 10, alignLeft: true });
+    return;
+  }
+  newChatFlow(numbers[0]?.phone_number_id, phone.startsWith("91") && phone.length === 12 ? phone.slice(2) : phone);
+}
 
 /* ===================== bulk send ===================== */
 // Approximate Meta charge per delivered message in India (₹, before GST)
@@ -2455,9 +2643,9 @@ const DEMO_DATA = (() => {
     { phone_number_id: "1000000000000003", branch: "Chengalpattu", display_phone: "+91 90923 99239" }, { phone_number_id: "1000000000000004", branch: "Urapakkam", display_phone: "+91 97878 12733" }];
   const [g, p, c, u] = numbers.map((n) => n.phone_number_id);
   const convs = [
-    { id: 1, phone_number_id: p, customer_wa_id: "919876543210", customer_name: "Priya Raman", last_message: "Can I book a hair spa at 5 pm?", last_message_at: iso(3), last_direction: "in", last_inbound_at: iso(3), unread_count: 2, labels: ["Regular"], notes: "Prefers stylist Divya" },
+    { id: 1, phone_number_id: p, customer_wa_id: "919876543210", customer_name: "", profile_name: "Priya", last_message: "Can I book a hair spa at 5 pm?", last_message_at: iso(3), last_direction: "in", last_inbound_at: iso(3), unread_count: 2, labels: ["Regular"], notes: "Prefers stylist Divya" },
     { id: 2, phone_number_id: g, customer_wa_id: "919840012345", customer_name: "Karthik", last_message: "Thank you, see you tomorrow", last_message_at: iso(42), last_direction: "out", last_inbound_at: iso(50), unread_count: 0, pinned_at: iso(1000), labels: ["VIP"] },
-    { id: 3, phone_number_id: u, customer_wa_id: "919003311122", customer_name: "", last_message: "📷 Photo", last_message_at: iso(300), last_direction: "in", last_inbound_at: iso(300), unread_count: 1, labels: [] },
+    { id: 3, phone_number_id: u, customer_wa_id: "919003311122", customer_name: "", profile_name: "Lakshmi R", last_message: "📷 Photo", last_message_at: iso(300), last_direction: "in", last_inbound_at: iso(300), unread_count: 1, labels: [] },
     { id: 4, phone_number_id: c, customer_wa_id: "919445566778", customer_name: "Divya S", last_message: "📋 hydra_facial_offer", last_message_at: iso(60 * 30), last_direction: "out", last_inbound_at: iso(60 * 40), unread_count: 0, muted_until: new Date(now + 864e5).toISOString(), labels: ["Follow up"] },
     { id: 5, phone_number_id: p, customer_wa_id: "919500011223", customer_name: "Meena", last_message: "Ok thanks", last_message_at: iso(60 * 50), last_direction: "in", last_inbound_at: iso(60 * 50), unread_count: 0, archived: true, labels: [] },
     { id: 6, phone_number_id: g, customer_wa_id: "919600022334", customer_name: "Arun Kumar", last_message: "Is bridal makeup available on Sunday?", last_message_at: iso(60 * 70), last_direction: "in", last_inbound_at: iso(60 * 70), unread_count: 0, marked_unread: true, labels: ["New customer"] }];
@@ -2472,7 +2660,8 @@ const DEMO_DATA = (() => {
     { id: 20, conversation_id: 2, direction: "in", msg_type: "text", body: "Booked for 11 am tomorrow?", ts: iso(50), wa_message_id: "w20" },
     { id: 21, conversation_id: 2, direction: "out", msg_type: "text", body: "Thank you, see you tomorrow", ts: iso(42), status: "delivered", wa_message_id: "w21" }];
   const qr = [{ id: 1, shortcut: "timings", body: "We are open 9 am to 9 pm, all 7 days. 😊" }, { id: 2, shortcut: "location", body: "Green Trends Potheri — next to SRM main gate. https://maps.google.com/?q=Green+Trends+Potheri" }, { id: 3, shortcut: "thanks", body: "Thank you for visiting Green Trends! Please share your feedback 🙏" }];
-  return { numbers, convs, msgs, qr };
+  const contacts = [{ phone: "919876543210", name: "Priya Raman", email: "priya@example.com", birthday: "1996-08-12", photo: null }, { phone: "919840012345", name: "Karthik", photo: null }];
+  return { numbers, convs, msgs, qr, contacts };
 })();
 async function demoApi(b) {
   await sleep(120);
@@ -2485,6 +2674,7 @@ async function demoApi(b) {
   if (b.action === "bulk_start") return b.dry_run ? { ok: true, to_send: b.recipients.length, invalid: [], opted_out: 0 } : { ok: true, campaign_id: 1, to_send: b.recipients.length };
   if (b.action === "qr_save") return { ok: true, quick_reply: { id: b.id || Date.now(), shortcut: String(b.shortcut).replace(/^\/+/, "").toLowerCase(), body: b.body } };
   if (b.action === "media") throw new Error("No media in demo");
+  if (b.action === "contact_save") return { ok: true, contact: { phone: String(b.phone).replace(/\D/g, "").replace(/^(\d{10})$/, "91$1"), name: b.name, email: b.email || null, birthday: b.birthday || null, photo: b.photo ?? null } };
   if (b.action === "staff_list") return { staff: [{ email: "joeljohnsontraders@gmail.com", role: "admin", branches: [], active: true, has_login: true, last_sign_in_at: new Date().toISOString() }, { email: "potheri.manager@example.com", role: "agent", branches: ["Potheri"], active: true, has_login: true, last_sign_in_at: null }, { email: "old.staff@example.com", role: "agent", branches: ["Urapakkam"], active: false, has_login: true }] };
   return { ok: true, id: Date.now(), wa_message_id: "wd" + Date.now() };
 }
