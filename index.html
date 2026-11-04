@@ -473,6 +473,7 @@ svg{display:block;flex:none}
   .tip[data-tip]:hover::after{display:none}
 }
 @media(min-width:821px){ .only-mobile{display:none!important} }
+@media(max-width:820px){ .only-desktop{display:none!important} }
 @media(max-width:1180px) and (min-width:821px){
   #info{position:absolute;right:0;top:0;bottom:0;box-shadow:-4px 0 18px rgba(0,0,0,.12)}
 }
@@ -522,7 +523,6 @@ table.mini td.ph{background:var(--sel-green);font-weight:500}
 
 
 /* bulk screen placement inside the app */
-#bulk{position:absolute;top:0;right:0;bottom:0;left:var(--rail-w);z-index:8;border-left:1px solid var(--line)}
 .bar{height:64px;flex:none;display:flex;align-items:center;gap:12px;padding:0 16px 0 12px;background:var(--header)}
 .bar .grow{flex:1;min-width:0}
 .bar.bk-bar .title{font-size:16px}
@@ -533,7 +533,94 @@ table.mini td.ph{background:var(--sel-green);font-weight:500}
 .tpl-item.off:hover{background:var(--panel)}
 .bk-body{background:var(--app)}
 [data-theme=dark] .bk-body{background:#0c1317}
-@media(max-width:820px){ #bulk{left:0;z-index:22;border:0} .bar.bk-bar{background:var(--panel);border-bottom:1px solid var(--line)} }
+
+/* ---------- dashboard ---------- */
+#bulk,#dash{position:absolute;top:0;right:0;bottom:0;left:var(--rail-w);z-index:8;border-left:1px solid var(--line);display:flex;flex-direction:column}
+#dash .seg{margin:0}
+.dash-wrap{max-width:1100px;margin:0 auto}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:12px}
+.kpi{background:var(--panel);border-radius:12px;padding:14px 16px;box-shadow:0 1px 2px rgba(11,20,26,.08);display:flex;flex-direction:column;gap:4px;min-width:0;text-align:left;color:var(--text)}
+button.kpi{cursor:pointer;transition:box-shadow .15s}
+button.kpi:hover{box-shadow:0 2px 8px rgba(11,20,26,.14)}
+.kpi .k{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.kpi .v{font-size:28px;font-weight:600;letter-spacing:-.5px;line-height:1.15;color:var(--text)}
+.kpi .s{font-size:12.5px;color:var(--muted)}
+.kpi.warn .v{color:var(--sys-text)}
+[data-theme=light] .kpi.warn .v{color:#b26a00}
+.dash-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:12px}
+@media(max-width:1100px){.dash-grid{grid-template-columns:minmax(0,1fr)}}
+#dash .bk-body{overflow-x:hidden}
+.dcard{background:var(--panel);border-radius:12px;padding:16px 18px;box-shadow:0 1px 2px rgba(11,20,26,.08);min-width:0;margin-bottom:12px}
+.dcard h3{font-size:15px;font-weight:600;margin-bottom:2px;display:flex;align-items:center;gap:8px;justify-content:space-between}
+.dcard .sub{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+.legend{display:flex;gap:16px;font-size:12.5px;color:var(--text2);margin-bottom:6px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.chart-wrap{position:relative}
+.chart-wrap svg{display:block;width:100%;height:220px;overflow:visible}
+.chart-wrap .gl{stroke:var(--line);stroke-width:1}
+.chart-wrap .ax{fill:var(--muted);font-size:11px}
+.chart-wrap .hit{fill:transparent;cursor:default}
+.chart-wrap .hit:hover,.chart-wrap .hit.on{fill:rgba(127,127,127,.08)}
+.ctip{position:absolute;pointer-events:none;background:var(--menu);color:var(--text);border-radius:8px;box-shadow:var(--shadow);padding:8px 10px;font-size:12.5px;line-height:1.5;white-space:nowrap;z-index:2;transform:translate(-50%,-100%);margin-top:-8px}
+.ctip b{font-weight:600}
+.ctip i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px}
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.tbl th{font-weight:500;color:var(--muted);text-align:right;padding:8px 6px;border-bottom:1px solid var(--line);white-space:nowrap;font-size:12.5px}
+.tbl td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl tr:last-child td{border-bottom:0}
+.tbl tfoot td{font-weight:600;border-top:1px solid var(--line2)}
+.tbl-scroll{overflow-x:auto}
+.wait-item{display:flex;align-items:center;gap:12px;padding:9px 4px;border-bottom:1px solid var(--line);cursor:pointer;border-radius:6px}
+.wait-item:last-child{border-bottom:0}
+.wait-item:hover{background:var(--hover)}
+.wait-item .grow{flex:1;min-width:0}
+.wait-item .nm{font-size:14.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wait-item .pv{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wait-item .ago{font-size:12.5px;font-weight:500;white-space:nowrap}
+.wait-item .ago.late{color:#c26d00}
+[data-theme=dark] .wait-item .ago.late{color:#ffbc38}
+.btn-link{color:var(--green-d);font-size:13px;font-weight:500}
+
+/* ---------- list polish ---------- */
+.btag{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);white-space:nowrap;flex:none}
+.btag i{width:7px;height:7px;border-radius:50%;display:block}
+.wait{display:inline-flex;align-items:center;gap:3px;font-size:11.5px;font-weight:600;color:#b26a00;background:rgba(255,188,56,.18);border-radius:9px;padding:0 6px;line-height:18px;flex:none}
+[data-theme=dark] .wait{color:#ffbc38;background:rgba(255,188,56,.12)}
+.chips{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);scroll-behavior:smooth}
+.chips.at-end{-webkit-mask-image:none;mask-image:none}
+.sk{background:linear-gradient(90deg,rgba(127,127,127,.12) 25%,rgba(127,127,127,.22) 37%,rgba(127,127,127,.12) 63%);background-size:400% 100%;animation:sk 1.3s ease infinite;border-radius:6px}
+@keyframes sk{0%{background-position:100% 50%}100%{background-position:0 50%}}
+.sk-row{display:flex;align-items:center;gap:13px;height:72px;padding:0 16px 0 21px}
+.sk-row .sk.av{width:49px;height:49px;border-radius:50%;flex:none}
+.sk-row .lines{flex:1;display:flex;flex-direction:column;gap:9px}
+.sk-bub{height:34px;border-radius:7.5px;margin:6px 9px}
+.msg.new .bubble{animation:msgIn .18s ease-out}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}
+.wpill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;border-radius:12px;padding:3px 10px;white-space:nowrap;cursor:default}
+.wpill.open{background:var(--chip-on);color:var(--chip-on-text)}
+.wpill.closed{background:rgba(255,188,56,.2);color:#9a5b00}
+[data-theme=dark] .wpill.closed{color:#ffbc38;background:rgba(255,188,56,.12)}
+.wcards{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;justify-content:center}
+.wcard{background:var(--panel);border-radius:12px;padding:14px 18px;min-width:150px;text-align:left;box-shadow:0 1px 2px rgba(11,20,26,.08);cursor:pointer;color:var(--text)}
+.wcard:hover{box-shadow:0 2px 8px rgba(11,20,26,.14)}
+.wcard .v{font-size:24px;font-weight:600}
+.wcard .k{font-size:12.5px;color:var(--muted)}
+@media(max-width:820px){
+  #bulk,#dash{left:0;bottom:calc(64px + env(safe-area-inset-bottom));z-index:22;border:0}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .kpi{padding:12px}
+  .kpi .v{font-size:24px}
+  .kpis>.kpi:last-child:nth-child(odd){grid-column:1/-1}
+  .dcard{padding:14px}
+  #dash .bar{flex-wrap:wrap;height:auto;padding:8px 12px;gap:8px}
+  #dash .bar .seg{width:100%;justify-content:flex-start}
+  .chips{-webkit-mask-image:none;mask-image:none}
+  #bnav button{font-size:11.5px}
+  #bnav .pill{width:56px}
+}
+
+@media(max-width:820px){ #bulk{border:0} .bar.bk-bar{background:var(--panel);border-bottom:1px solid var(--line)} }
 </style>
 </head>
 <body>
@@ -564,6 +651,7 @@ table.mini td.ph{background:var(--sel-green);font-weight:500}
 <div id="app" class="hidden">
   <nav id="rail">
     <button class="rail-btn tip on" id="rail-chats" data-tip="Chats"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h10v2H7zm0-3h10v2H7zm0 6h7v2H7z"/></svg><span class="b hidden" id="rail-unread"></span></button>
+    <button class="rail-btn tip" id="rail-dash" data-tip="Dashboard"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg></button>
     <button class="rail-btn tip" id="btn-bulk" data-tip="Bulk send"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18 11v2h4v-2h-4zm-2 6.61c.96.71 2.21 1.65 3.2 2.39.4-.53.8-1.07 1.2-1.6-.99-.74-2.24-1.68-3.2-2.4-.4.54-.8 1.08-1.2 1.61zM20.4 5.6c-.4-.53-.8-1.07-1.2-1.6-.99.74-2.24 1.68-3.2 2.4.4.53.8 1.07 1.2 1.6.96-.72 2.21-1.65 3.2-2.4zM4 9c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h1v4h2v-4h1l5 3V6L8 9H4zm11.5 3c0-1.33-.58-2.53-1.5-3.35v6.69c.92-.81 1.5-2.01 1.5-3.34z"/></svg></button>
     <button class="rail-btn tip" id="rail-contacts" data-tip="Contacts"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 0H4v2h16V0zM4 24h16v-2H4v2zM20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 2.75c1.24 0 2.25 1.01 2.25 2.25s-1.01 2.25-2.25 2.25S9.75 10.24 9.75 9 10.76 6.75 12 6.75zM17 17H7v-1.5c0-1.67 3.33-2.5 5-2.5s5 .83 5 2.5V17z"/></svg></button>
     <button class="rail-btn tip" id="rail-qr" data-tip="Quick replies"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></button>
@@ -595,6 +683,7 @@ table.mini td.ph{background:var(--sel-green);font-weight:500}
     </div>
     <nav id="bnav">
       <button class="on" data-nav="chats"><span class="pill"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h10v2H7zm0-3h10v2H7zm0 6h7v2H7z"/></svg><span class="badge hidden" id="bnav-unread"></span></span>Chats</button>
+      <button data-nav="dash"><span class="pill"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg></span>Dashboard</button>
       <button data-nav="bulk"><span class="pill"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18 11v2h4v-2h-4zm-2 6.61c.96.71 2.21 1.65 3.2 2.39.4-.53.8-1.07 1.2-1.6-.99-.74-2.24-1.68-3.2-2.4-.4.54-.8 1.08-1.2 1.61zM20.4 5.6c-.4-.53-.8-1.07-1.2-1.6-.99.74-2.24 1.68-3.2 2.4.4.53.8 1.07 1.2 1.6.96-.72 2.21-1.65 3.2-2.4zM4 9c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h1v4h2v-4h1l5 3V6L8 9H4zm11.5 3c0-1.33-.58-2.53-1.5-3.35v6.69c.92-.81 1.5-2.01 1.5-3.34z"/></svg></span>Bulk send</button>
       <button data-nav="contacts"><span class="pill"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 0H4v2h16V0zM4 24h16v-2H4v2zM20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 2.75c1.24 0 2.25 1.01 2.25 2.25s-1.01 2.25-2.25 2.25S9.75 10.24 9.75 9 10.76 6.75 12 6.75zM17 17H7v-1.5c0-1.67 3.33-2.5 5-2.5s5 .83 5 2.5V17z"/></svg></span>Contacts</button>
       <button data-nav="settings"><span class="pill"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></span>Settings</button>
@@ -606,6 +695,7 @@ table.mini td.ph{background:var(--sel-green);font-weight:500}
       <div class="art"><img src="icon-192.png" alt=""></div>
       <h2>Green Trends Chats</h2>
       <p>Reply to customers of all four branches from one place.<br>Pick a chat on the left, or start a new one.</p>
+      <div class="wcards" id="wcards"></div>
       <div class="lock"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>Only staff you add can sign in</div>
     </div>
     <section id="chat" class="hidden">
@@ -613,6 +703,7 @@ table.mini td.ph{background:var(--sel-green);font-weight:500}
         <button class="icon-btn only-mobile" id="btn-back" title="Back"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l1.4 1.4L7.8 11H20v2H7.8l5.6 5.6L12 20l-8-8 8-8z"/></svg></button>
         <div class="who" id="c-head"><div class="avatar" id="c-avatar"></div><div class="t"><div class="title" id="c-name"></div><div class="subtitle" id="c-sub"></div></div></div>
         <div class="acts">
+          <span class="wpill only-desktop hidden" id="c-win" title=""></span>
           <button class="icon-btn" id="btn-tpl" title="Send template"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg></button>
           <button class="icon-btn" id="btn-csearch" title="Search"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M15.9 14.3H15l-.3-.3c1-1.1 1.6-2.7 1.6-4.3 0-3.7-3-6.7-6.7-6.7S3 6 3 9.7s3 6.7 6.7 6.7c1.6 0 3.2-.6 4.3-1.6l.3.3v.8l5.1 5.1 1.5-1.5-5-5.2zm-6.2 0c-2.6 0-4.6-2.1-4.6-4.6s2.1-4.6 4.6-4.6 4.6 2.1 4.6 4.6-2 4.6-4.6 4.6z"/></svg></button>
           <button class="icon-btn" id="btn-cmenu" title="Menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7a2 2 0 1 0-.001-4.001A2 2 0 0 0 12 7zm0 2a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 9zm0 6a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 15z"/></svg></button>
@@ -666,8 +757,18 @@ table.mini td.ph{background:var(--sel-green);font-weight:500}
     <div class="pbody" id="info-body"></div>
   </aside>
 
+  <!-- ============ DASHBOARD ============ -->
+  <div id="dash" class="hidden">
+    <div class="bar bk-bar">
+      <button class="icon-btn" id="dash-back" title="Back"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l1.4 1.4L7.8 11H20v2H7.8l5.6 5.6L12 20l-8-8 8-8z"/></svg></button>
+      <div class="grow"><div class="title">Dashboard</div><div class="subtitle" id="dash-sub">How your branches are doing</div></div>
+      <div class="seg" id="dash-range"><button data-d="1">Today</button><button data-d="7">7 days</button><button data-d="30">30 days</button></div>
+    </div>
+    <div class="bk-body"><div class="dash-wrap"><div class="chips" id="dash-branches" style="background:none;padding:0 0 12px"></div><div id="dash-body"></div></div></div>
+  </div>
+
   <!-- ============ BULK SEND ============ -->
-  <div id="bulk" class="hidden" style="display:flex;flex-direction:column">
+  <div id="bulk" class="hidden">
     <div class="bar bk-bar">
       <button class="icon-btn" id="bk-back" title="Back"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l1.4 1.4L7.8 11H20v2H7.8l5.6 5.6L12 20l-8-8 8-8z"/></svg></button>
       <div class="grow"><div class="title">Bulk send</div><div class="subtitle">Send an approved template to many customers</div></div>
@@ -902,6 +1003,7 @@ async function afterLogin() {
     $("login").classList.add("hidden"); toast("Connecting…", 2500); setTimeout(afterLogin, 3000); return;
   }
   $("login").classList.add("hidden"); $("app").classList.remove("hidden");
+  $("list").innerHTML = Array.from({ length: 8 }, () => `<div class="sk-row"><div class="sk av"></div><div class="lines"><div class="sk" style="height:13px;width:55%"></div><div class="sk" style="height:11px;width:80%"></div></div></div>`).join("");
   $("rail-avatar").textContent = initials(me.email.split("@")[0]) || "GT";
   await loadAll();
   subscribe();
@@ -978,18 +1080,41 @@ window.addEventListener("offline", () => $("offline").classList.remove("hidden")
 function numberById(id) { return numbers.find((n) => n.phone_number_id === id) || {}; }
 const isMuted = (c) => c.muted_until && new Date(c.muted_until) > new Date();
 const isUnread = (c) => c.unread_count > 0 || c.marked_unread;
+const isWaiting = (c) => c.last_direction === "in" && !c.archived;
+function agoShort(iso) { const m = Math.max(0, Math.floor((Date.now() - new Date(iso).getTime()) / 60000)); if (m < 60) return m + "m"; const h = Math.floor(m / 60); if (h < 24) return h + "h"; return Math.floor(h / 24) + "d"; }
+function waitHtml(c) {
+  if (!isWaiting(c) || !c.last_message_at) return "";
+  const mins = (Date.now() - new Date(c.last_message_at).getTime()) / 60000;
+  if (mins < 15 || mins > 7 * 1440) return "";
+  return `<span class="wait" title="Customer is waiting for a reply">${I(P.timer, 12)}${agoShort(c.last_message_at)}</span>`;
+}
 function sortConvs(a, b) {
   const pa = a.pinned_at ? 1 : 0, pb = b.pinned_at ? 1 : 0;
   if (pa !== pb) return pb - pa;
   if (pa && pb) return new Date(b.pinned_at) - new Date(a.pinned_at);
   return new Date(b.last_message_at || b.created_at || 0) - new Date(a.last_message_at || a.created_at || 0);
 }
+function renderWelcome() {
+  if (typeof dashLive === "function") dashLive();
+  const el = $("wcards"); if (!el) return;
+  const active = convs.filter((c) => !c.archived);
+  const waiting = active.filter(isWaiting).length, unread = active.filter(isUnread).length;
+  const today = new Date().toDateString();
+  const todayChats = active.filter((c) => c.last_inbound_at && new Date(c.last_inbound_at).toDateString() === today).length;
+  el.innerHTML = `<button class="wcard" data-w="waiting"><div class="v">${waiting}</div><div class="k">Need a reply</div></button>
+    <button class="wcard" data-w="unread"><div class="v">${unread}</div><div class="k">Unread chats</div></button>
+    <button class="wcard" data-w="today"><div class="v">${todayChats}</div><div class="k">Customers messaged today</div></button>
+    <button class="wcard" data-w="dash"><div class="v">${I("M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z", 26, 'style="color:var(--green)"')}</div><div class="k">Open dashboard</div></button>`;
+}
+$("wcards").onclick = (e) => { const b = e.target.closest("[data-w]"); if (!b) return; const w = b.dataset.w; if (w === "dash") { openDash(); return; } filter = w === "today" ? "all" : w; renderChips(); renderList(); };
 function renderChips() {
   const active = convs.filter((c) => !c.archived);
   const unreadBy = {}; for (const c of active) if (isUnread(c)) unreadBy[c.phone_number_id] = (unreadBy[c.phone_number_id] || 0) + 1;
   const total = Object.values(unreadBy).reduce((a, b) => a + b, 0);
   let h = `<button class="chip ${filter === "all" ? "on" : ""}" data-f="all">All</button>`;
   h += `<button class="chip ${filter === "unread" ? "on" : ""}" data-f="unread">Unread${total ? `<span class="n">${total}</span>` : ""}</button>`;
+  const waiting = active.filter(isWaiting).length;
+  h += `<button class="chip ${filter === "waiting" ? "on" : ""}" data-f="waiting">Needs reply${waiting ? `<span class="n" style="background:#ffbc38;color:#3b2f00">${waiting}</span>` : ""}</button>`;
   for (const n of numbers) h += `<button class="chip ${filter === n.phone_number_id ? "on" : ""}" data-f="${esc(n.phone_number_id)}"><span class="dot" style="background:${BRANCH_COLORS[n.branch] || "#888"}"></span>${esc(n.branch)}${unreadBy[n.phone_number_id] ? `<span class="n">${unreadBy[n.phone_number_id]}</span>` : ""}</button>`;
   h += `<button class="chip ${filter === "labels" ? "on" : ""}" data-f="labels">${filter === "labels" && labelFilter ? "Label: " + esc(labelFilter) : "Labels"}</button>`;
   if ($("chips").innerHTML !== h) $("chips").innerHTML = h;
@@ -997,12 +1122,16 @@ function renderChips() {
   $("rail-unread").textContent = total; $("rail-unread").classList.toggle("hidden", !total);
   $("bnav-unread").textContent = total; $("bnav-unread").classList.toggle("hidden", !total);
   document.title = total ? `(${total}) Green Trends Chats` : "Green Trends Chats";
+  renderWelcome();
 }
 $("chips").onclick = (e) => {
   const b = e.target.closest(".chip"); if (!b) return;
   if (b.dataset.f === "labels") { labelFilterMenu(b); return; }
   filter = b.dataset.f; renderChips(); renderList(); $("list").scrollTop = 0;
 };
+$("chips").addEventListener("wheel", (e) => { const c = $("chips"); if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && c.scrollWidth > c.clientWidth) { c.scrollLeft += e.deltaY; e.preventDefault(); } }, { passive: false });
+$("chips").addEventListener("scroll", () => { const c = $("chips"); c.classList.toggle("at-end", c.scrollLeft + c.clientWidth >= c.scrollWidth - 4); }, { passive: true });
+setInterval(() => { if (convs.length) { listCache.clear(); scheduleList(); renderWelcome(); } }, 60000);
 let labelFilter = null;
 function labelFilterMenu(anchor) {
   const r = anchor.getBoundingClientRect();
@@ -1023,7 +1152,7 @@ function rowHtml(c) {
   return `${avatarFor(c)}<div class="body">
     <div class="l1"><div class="name">${esc(nameOf(c))}${tag ? ` <span class="ptag">${esc(tag)}</span>` : ""}</div><div class="time">${timeLabel(c.last_message_at)}</div></div>
     <div class="l2"><div class="prev">${previewHtml(c)}</div><div class="rbadges">
-      <span class="tag" style="background:${BRANCH_COLORS[n.branch] || "#888"}">${esc(n.branch || "")}</span>
+      ${waitHtml(c)}<span class="btag"><i style="background:${BRANCH_COLORS[n.branch] || "#888"}"></i>${esc(n.branch || "")}</span>
       ${muted ? `<span class="ico">${I(P.mute, 18)}</span>` : ""}
       ${c.pinned_at ? `<span class="ico">${I(P.pin, 18, 'style="transform:rotate(45deg)"')}</span>` : ""}
       ${c.unread_count ? `<span class="badge ${muted ? "muted" : ""}">${c.unread_count}</span>` : c.marked_unread ? `<span class="badge dot ${muted ? "muted" : ""}"></span>` : ""}
@@ -1049,10 +1178,11 @@ function renderList() {
     if (q) return (nameOf(c).toLowerCase().includes(q) || (c.profile_name || "").toLowerCase().includes(q) || (qd.length >= 3 && c.customer_wa_id.includes(qd)));
     if (c.archived) return false;
     if (filter === "unread") return isUnread(c) || (current && current.id === c.id);
+    if (filter === "waiting") return isWaiting(c) || (current && current.id === c.id);
     if (filter === "labels") return (c.labels || []).includes(labelFilter);
     if (filter !== "all") return c.phone_number_id === filter;
     return true;
-  }).sort(sortConvs);
+  }).sort(filter === "waiting" && !q ? (a, b) => new Date(a.last_message_at || 0) - new Date(b.last_message_at || 0) : sortConvs);
   const nodes = [];
   if (!q && archivedCount && filter === "all") {
     const a = $("arch-row") || Object.assign(document.createElement("div"), { id: "arch-row", className: "arch-row" });
@@ -1077,7 +1207,7 @@ function renderList() {
     }
   }
   if (!rows.length && !(q && (msgSearch.rows.length || qd.length >= 10))) {
-    nodes.push(Object.assign(document.createElement("div"), { className: "empty-list", textContent: q ? "No chats, contacts or messages found" : filter === "unread" ? "No unread chats" : filter === "labels" ? `No chats labelled "${labelFilter}"` : convs.length ? "No chats here" : "No chats yet. When customers message the branch numbers, they'll appear here." }));
+    nodes.push(Object.assign(document.createElement("div"), { className: "empty-list", textContent: q ? "No chats, contacts or messages found" : filter === "unread" ? "No unread chats" : filter === "waiting" ? "All caught up — no customer is waiting for a reply" : filter === "labels" ? `No chats labelled "${labelFilter}"` : convs.length ? "No chats here" : "No chats yet. When customers message the branch numbers, they'll appear here." }));
   }
   if (!q) { const f = $("list-foot") || Object.assign(document.createElement("div"), { id: "list-foot", className: "list-foot" }); f.innerHTML = `${I(P.lock, 12)}Only signed-in Green Trends staff can see these chats`; nodes.push(f); }
   $("list").replaceChildren(...nodes);
@@ -1181,9 +1311,9 @@ function longPress(root, selector, fn) {
 /* ===================== navigation (rail, bottom nav, back button) ===================== */
 function setRail(which) {
   document.querySelectorAll("#rail .rail-btn").forEach((b) => b.classList.remove("on"));
-  const map = { chats: "rail-chats", bulk: "btn-bulk", qr: "rail-qr", starred: "rail-star", archived: "rail-arch", settings: "rail-settings", contacts: "rail-contacts" };
+  const map = { chats: "rail-chats", bulk: "btn-bulk", qr: "rail-qr", starred: "rail-star", archived: "rail-arch", settings: "rail-settings", contacts: "rail-contacts", dash: "rail-dash" };
   $(map[which] || "rail-chats")?.classList.add("on");
-  document.querySelectorAll("#bnav button").forEach((b) => b.classList.toggle("on", b.dataset.nav === (["chats", "bulk", "contacts", "settings"].includes(which) ? which : "chats")));
+  document.querySelectorAll("#bnav button").forEach((b) => b.classList.toggle("on", b.dataset.nav === (["chats", "bulk", "contacts", "settings", "dash"].includes(which) ? which : "chats")));
 }
 function pushNav() { if (isMobile()) { history.pushState({ gt: ++navDepth }, ""); } }
 function navBack(fallback) { if (isMobile() && navDepth > 0) history.back(); else fallback(); }
@@ -1194,13 +1324,15 @@ window.addEventListener("popstate", () => {
   if ($("modal-root").firstChild) return closeModal();
   if (!$("info").classList.contains("hidden")) return closeInfo(true);
   if (document.body.classList.contains("in-chat")) return closeChat(true);
-  if (tabOpen()) { hidePanelRaw(); hideBulkRaw(); setRail("chats"); }
+  if (tabOpen()) { hidePanelRaw(); hideBulkRaw(); hideDashRaw(); setRail("chats"); }
 });
-function tabOpen() { return !$("v-panel").classList.contains("hidden") || !$("bulk").classList.contains("hidden"); }
+function tabOpen() { return !$("v-panel").classList.contains("hidden") || !$("bulk").classList.contains("hidden") || !$("dash").classList.contains("hidden"); }
+function hideDashRaw() { $("dash").classList.add("hidden"); }
 function hidePanelRaw() { $("v-panel").classList.add("hidden"); panelKind = null; }
 function hideBulkRaw() { if (typeof bk !== "undefined") clearInterval(bk.timer); $("bulk").classList.add("hidden"); }
 $("rail-chats").onclick = () => goChats();
-function goChats() { if (!tabOpen()) { setRail("chats"); return; } if (isMobile() && navDepth > 0) history.back(); else { hidePanelRaw(); hideBulkRaw(); setRail("chats"); } }
+function goChats() { if (!tabOpen()) { setRail("chats"); return; } if (isMobile() && navDepth > 0) history.back(); else { hidePanelRaw(); hideBulkRaw(); hideDashRaw(); setRail("chats"); } }
+$("rail-dash").onclick = () => openDash();
 $("rail-qr").onclick = () => openPanel("qr");
 $("rail-contacts").onclick = () => openPanel("contacts");
 $("rail-star").onclick = () => openPanel("starred");
@@ -1211,6 +1343,7 @@ $("bnav").onclick = (e) => {
   const b = e.target.closest("button"); if (!b) return;
   const v = b.dataset.nav;
   if (v === "chats") goChats();
+  else if (v === "dash") openDash();
   else if (v === "bulk") openBulk();
   else openPanel(v);
 };
@@ -1218,6 +1351,7 @@ $("btn-menu").onclick = (e) => {
   e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect();
   showMenu([
     { label: "New chat", icon: P.unread, act: () => $("btn-new").click() },
+    { label: "Dashboard", icon: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z", act: () => openDash() },
     { label: "Bulk send", icon: "M18 11v2h4v-2h-4zm-2 6.61c.96.71 2.21 1.65 3.2 2.39.4-.53.8-1.07 1.2-1.6-.99-.74-2.24-1.68-3.2-2.4-.4.54-.8 1.08-1.2 1.61zM20.4 5.6c-.4-.53-.8-1.07-1.2-1.6-.99.74-2.24 1.68-3.2 2.4.4.53.8 1.07 1.2 1.6.96-.72 2.21-1.65 3.2-2.4zM4 9c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h1v4h2v-4h1l5 3V6L8 9H4z", act: () => openBulk() },
     { label: "Contacts", icon: P.person, act: () => openPanel("contacts") },
     { label: "Archived", icon: P.archive, act: () => openPanel("archived") },
@@ -1240,7 +1374,7 @@ async function logout() { if (DEMO) return; await sb.auth.signOut(); location.ha
 /* ===================== side panels ===================== */
 let panelKind = null;
 function openPanel(kind) {
-  const had = tabOpen(); hideBulkRaw();
+  const had = tabOpen(); hideBulkRaw(); hideDashRaw();
   if (!had) pushNav();
   panelKind = kind; setRail(kind);
   $("v-panel").classList.remove("hidden");
@@ -1406,6 +1540,15 @@ function renderWindow() {
   $("window-bar").classList.toggle("hidden", open);
   $("composer").classList.toggle("locked", !open);
   $("text").disabled = !open; $("btn-emoji").disabled = !open; $("btn-emoji-m").disabled = !open;
+  const wp = $("c-win"); wp.classList.remove("hidden");
+  if (open) {
+    const l = 24 * 3600e3 - (Date.now() - new Date(current.last_inbound_at).getTime());
+    wp.className = "wpill only-desktop open"; wp.innerHTML = `${I(P.timer, 14)}${l >= 3600e3 ? Math.floor(l / 3600e3) + "h" : Math.max(1, Math.ceil(l / 60000)) + "m"} to reply freely`;
+    wp.title = "You can send any message until the 24-hour window closes. After that, only approved templates.";
+  } else {
+    wp.className = "wpill only-desktop closed"; wp.innerHTML = `${I(P.lock, 13)}Templates only`;
+    wp.title = "The customer hasn't messaged in the last 24 hours, so only approved templates can be sent.";
+  }
   if (open) {
     const left = 24 * 3600e3 - (Date.now() - new Date(current.last_inbound_at).getTime());
     $("text").placeholder = left < 2 * 3600e3 ? `Type a message · reply window closes in ${Math.max(1, Math.ceil(left / 60000))} min` : "Type a message";
@@ -1430,7 +1573,7 @@ async function openChat(id) {
   $("text").value = getDraft(id); autosize(); updateSendBtn();
   scheduleList();
   // messages
-  const box = $("msgs-inner"); box.innerHTML = `<div class="loader-top" style="padding-top:40px"><div class="spinner"></div></div>`;
+  const box = $("msgs-inner"); box.innerHTML = [[60, 0], [42, 1], [70, 0], [35, 1], [55, 1], [48, 0]].map(([w, out]) => `<div style="display:flex;justify-content:${out ? "flex-end" : "flex-start"}"><div class="sk sk-bub" style="width:${w}%;max-width:420px"></div></div>`).join("");
   msgs = []; hasMoreOlder = false; newWhileUp = 0; updateScrollBtn();
   const unreadCount = c.unread_count || 0;
   try {
@@ -1576,6 +1719,7 @@ function appendMsg(m, notifyScroll) {
   const first = !prev || prev.direction !== m.direction || !!h;
   h += msgHtml(m, first);
   const wrap = document.createElement("div"); wrap.innerHTML = h;
+  wrap.querySelectorAll(".msg").forEach((x) => x.classList.add("new"));
   $("msgs-inner").append(...wrap.childNodes);
   observeMedia();
   if (m.direction === "out" || atBottom) scrollBottom(true);
@@ -2068,6 +2212,7 @@ document.addEventListener("keydown", (e) => {
   if (replyTo) return $("reply-x").click();
   if (!$("info").classList.contains("hidden")) return closeInfo();
   if (!$("bulk").classList.contains("hidden")) return closeBulk();
+  if (!$("dash").classList.contains("hidden")) return closeDash();
   if (!$("v-panel").classList.contains("hidden")) return closePanel();
   if (current && document.activeElement !== $("q")) closeChat();
 });
@@ -2305,6 +2450,158 @@ function openContact(phone, ev) {
   newChatFlow(numbers[0]?.phone_number_id, phone.startsWith("91") && phone.length === 12 ? phone.slice(2) : phone);
 }
 
+/* ===================== dashboard ===================== */
+const DCOL = { in: "#00a884", out: "#6f63e6" };
+const dash = { days: store.get("dash-days", 7), branch: "all", data: null, loading: false, error: null, asTable: false, seq: 0 };
+function openDash() {
+  hideMenu(); const had = tabOpen(); hidePanelRaw(); hideBulkRaw();
+  if (!had) pushNav();
+  $("dash").classList.remove("hidden"); setRail("dash");
+  renderDashRange(); loadDash();
+}
+function closeDash() { if ($("dash").classList.contains("hidden")) return; if (isMobile() && navDepth > 0) { history.back(); return; } hideDashRaw(); setRail("chats"); }
+$("dash-back").onclick = () => closeDash();
+$("dash-range").onclick = (e) => { const b = e.target.closest("[data-d]"); if (!b) return; dash.days = Number(b.dataset.d); store.set("dash-days", dash.days); renderDashRange(); loadDash(); };
+$("dash-branches").onclick = (e) => { const b = e.target.closest("[data-b]"); if (!b) return; dash.branch = b.dataset.b; renderDash(); };
+function renderDashRange() { document.querySelectorAll("#dash-range button").forEach((b) => b.classList.toggle("on", Number(b.dataset.d) === dash.days)); }
+const istDay = (offset = 0) => new Date(Date.now() + 5.5 * 3600e3 - offset * 864e5).toISOString().slice(0, 10);
+function demoStats(days) {
+  const daily = [], seed = (s) => { let x = 0; for (const ch of s) x = (x * 31 + ch.charCodeAt(0)) % 9973; return x; };
+  for (let i = 0; i < days; i++) { const d = istDay(i); numbers.forEach((n, k) => { const r = seed(d + n.phone_number_id); daily.push({ phone_number_id: n.phone_number_id, d, received: (r % 9) + k, sent: (r % 7) + 2 + (i % 3) }); }); }
+  return { daily,
+    response: numbers.map((n, k) => ({ phone_number_id: n.phone_number_id, avg_mins: [4.2, 11.5, 38, 2.1][k], median_mins: [3, 8, 25, 1.5][k], n: 10 + k * 3 })),
+    templates: numbers.map((n, k) => ({ phone_number_id: n.phone_number_id, sent: 40 * (k + 1), delivered: 38 * (k + 1) - k, read: 25 * (k + 1), failed: k === 0 ? 6 : 1 })),
+    convs: numbers.map((n) => ({ phone_number_id: n.phone_number_id, needs_reply: 0, unread: 0, new_chats: 3 })) };
+}
+async function loadDash() {
+  const my = ++dash.seq; dash.loading = true; dash.error = null; renderDash();
+  try {
+    let data;
+    if (DEMO) { await sleep(250); data = demoStats(dash.days); }
+    else { const { data: d, error } = await sb.rpc("inbox_stats", { p_days: dash.days }); if (error) throw error; data = d; }
+    if (my !== dash.seq) return;
+    dash.data = data || {}; dash.loading = false;
+  } catch (e) { if (my !== dash.seq) return; dash.loading = false; dash.error = e.message || String(e); }
+  renderDash();
+}
+const fmtMins = (m) => m == null || isNaN(m) ? "—" : m < 1 ? "under 1 min" : m < 60 ? Math.round(m) + " min" : m < 1440 ? `${Math.floor(m / 60)}h ${Math.round(m % 60)}m` : `${Math.floor(m / 1440)}d ${Math.round((m % 1440) / 60)}h`;
+const pct = (a, b) => (b > 0 ? Math.round((a / b) * 100) + "%" : "—");
+const branchOf = (pid) => numbers.find((n) => n.phone_number_id === pid)?.branch || "Other";
+function dashAgg() {
+  const d = dash.data || {}, pick = (rows) => (rows || []).filter((r) => dash.branch === "all" || r.phone_number_id === dash.branch);
+  const daily = pick(d.daily), resp = pick(d.response), tpl = pick(d.templates);
+  const sum = (rows, k) => rows.reduce((a, r) => a + Number(r[k] || 0), 0);
+  const rn = sum(resp, "n");
+  const avgReply = rn ? resp.reduce((a, r) => a + Number(r.avg_mins) * Number(r.n), 0) / rn : null;
+  const live = convs.filter((c) => !c.archived && (dash.branch === "all" || c.phone_number_id === dash.branch));
+  const perBranch = numbers.filter((n) => dash.branch === "all" || n.phone_number_id === dash.branch).map((n) => {
+    const id = n.phone_number_id, f = (rows) => (rows || []).filter((r) => r.phone_number_id === id);
+    const r = f(d.response)[0], t = f(d.templates)[0] || {};
+    const dl = f(d.daily);
+    return { n, received: sum(dl, "received"), sent: sum(dl, "sent"), waiting: convs.filter((c) => c.phone_number_id === id && isWaiting(c)).length,
+      avg: r ? Number(r.avg_mins) : null, tsent: Number(t.sent || 0), tread: Number(t.read || 0), tdel: Number(t.delivered || 0), tfail: Number(t.failed || 0) };
+  });
+  return { daily, received: sum(daily, "received"), sent: sum(daily, "sent"), avgReply, replies: rn,
+    tsent: sum(tpl, "sent"), tdel: sum(tpl, "delivered"), tread: sum(tpl, "read"), tfail: sum(tpl, "failed"),
+    waitingList: live.filter(isWaiting).sort((a, b) => new Date(a.last_message_at || 0) - new Date(b.last_message_at || 0)), perBranch };
+}
+function renderDash() {
+  if ($("dash").classList.contains("hidden")) return;
+  const rangeTxt = dash.days === 1 ? "today" : `the last ${dash.days} days`;
+  $("dash-sub").textContent = `Messages and replies for ${rangeTxt}`;
+  $("dash-branches").innerHTML = (numbers.length > 1 ? `<button class="chip ${dash.branch === "all" ? "on" : ""}" data-b="all">All branches</button>` : "") +
+    numbers.map((n) => `<button class="chip ${dash.branch === n.phone_number_id ? "on" : ""}" data-b="${n.phone_number_id}"><span class="btag" style="color:inherit"><i style="background:${BRANCH_COLORS[n.branch] || "#888"}"></i>${esc(n.branch)}</span></button>`).join("");
+  const body = $("dash-body");
+  if (dash.loading && !dash.data) { body.innerHTML = `<div class="kpis">${Array.from({ length: 5 }, () => `<div class="kpi"><div class="sk" style="height:12px;width:60%"></div><div class="sk" style="height:26px;width:40%;margin-top:6px"></div></div>`).join("")}</div><div class="dcard"><div class="sk" style="height:220px"></div></div>`; return; }
+  if (dash.error) { body.innerHTML = `<div class="dcard"><h3>Couldn't load the dashboard</h3><div class="sub">${esc(dash.error)}</div><button class="btn" id="dash-retry">Try again</button></div>`; $("dash-retry").onclick = loadDash; return; }
+  const a = dashAgg(); dash.sig = dashSig();
+  const tplRead = a.tsent - a.tfail > 0 ? pct(a.tread, a.tsent - a.tfail) : "—";
+  const oldest = a.waitingList[0];
+  body.innerHTML = `
+  <div class="kpis" style="${dash.loading ? "opacity:.6" : ""}">
+    <div class="kpi"><div class="k"><i style="width:9px;height:9px;border-radius:3px;background:${DCOL.in}"></i>Messages received</div><div class="v">${nf(a.received)}</div><div class="s">from customers, ${rangeTxt}</div></div>
+    <div class="kpi"><div class="k"><i style="width:9px;height:9px;border-radius:3px;background:${DCOL.out}"></i>Messages sent</div><div class="v">${nf(a.sent)}</div><div class="s">replies and templates</div></div>
+    <button class="kpi ${a.waitingList.length ? "warn" : ""}" id="kpi-wait"><div class="k">${I(P.timer, 15)}Waiting for a reply</div><div class="v">${a.waitingList.length}</div><div class="s">${oldest ? "longest " + agoShort(oldest.last_message_at) : "all caught up"} · right now</div></button>
+    <div class="kpi"><div class="k">Average first reply</div><div class="v">${a.avgReply == null ? "—" : fmtMins(a.avgReply)}</div><div class="s">${a.replies ? `over ${a.replies} customer message${a.replies === 1 ? "" : "s"}` : "no replies in this period"}</div></div>
+    <div class="kpi"><div class="k">Template read rate</div><div class="v">${tplRead}</div><div class="s">${nf(a.tsent)} sent · ${nf(a.tread)} read${a.tfail ? ` · <span style="color:#d93a4a">${nf(a.tfail)} failed</span>` : ""}</div></div>
+  </div>
+  <div class="dash-grid">
+    <div>
+      <div class="dcard">
+        <h3><span>${dash.days === 1 ? "Messages by branch" : "Messages per day"}</span><button class="btn-link" id="dash-tbl">${dash.asTable ? "Show chart" : "Show as table"}</button></h3>
+        <div class="sub">Received from customers vs sent by your team</div>
+        <div class="legend"><span><i style="background:${DCOL.in}"></i>Received</span><span><i style="background:${DCOL.out}"></i>Sent</span></div>
+        <div class="chart-wrap" id="dash-chart"></div>
+      </div>
+      <div class="dcard"><h3>By branch</h3><div class="sub">${rangeTxt[0].toUpperCase() + rangeTxt.slice(1)} · waiting is right now</div><div class="tbl-scroll">${branchTable(a.perBranch)}</div></div>
+    </div>
+    <div class="dcard"><h3><span>Waiting longest</span>${a.waitingList.length ? `<button class="btn-link" id="dash-allwait">Open list</button>` : ""}</h3><div class="sub">Customers whose last message has no reply yet</div>
+      ${a.waitingList.length ? a.waitingList.slice(0, 10).map((c) => {
+        const mins = (Date.now() - new Date(c.last_message_at).getTime()) / 60000;
+        return `<div class="wait-item" data-c="${c.id}">${avatarFor(c, "avatar")}<div class="grow"><div class="nm">${esc(nameOf(c))}</div><div class="pv">${esc(branchOf(c.phone_number_id))} · ${esc(c.last_message || "")}</div></div><div class="ago ${mins > 60 ? "late" : ""}">${agoShort(c.last_message_at)}</div></div>`;
+      }).join("") : `<div class="empty-list" style="padding:30px 10px">Nobody is waiting. Nice work!</div>`}
+    </div>
+  </div>`;
+  $("dash-tbl").onclick = () => { dash.asTable = !dash.asTable; renderDash(); };
+  $("kpi-wait").onclick = () => showWaitingChats();
+  const aw = $("dash-allwait"); if (aw) aw.onclick = () => showWaitingChats();
+  body.querySelectorAll(".wait-item").forEach((el) => (el.onclick = () => { const id = Number(el.dataset.c); goChats(); setTimeout(() => openChat(id), isMobile() ? 60 : 0); }));
+  drawDashChart(a);
+}
+function showWaitingChats() { filter = "waiting"; goChats(); renderChips(); renderList(); }
+function branchTable(rows) {
+  const tot = rows.reduce((t, r) => ({ received: t.received + r.received, sent: t.sent + r.sent, waiting: t.waiting + r.waiting, tsent: t.tsent + r.tsent, tread: t.tread + r.tread, tfail: t.tfail + r.tfail }), { received: 0, sent: 0, waiting: 0, tsent: 0, tread: 0, tfail: 0 });
+  const tr = (r) => `<td>${nf(r.received)}</td><td>${nf(r.sent)}</td><td>${r.waiting ? `<b style="color:#c26d00">${r.waiting}</b>` : 0}</td>`;
+  return `<table class="tbl"><thead><tr><th>Branch</th><th>Received</th><th>Sent</th><th>Waiting</th><th>Avg reply</th><th>Templates</th><th>Read</th></tr></thead><tbody>
+    ${rows.map((r) => `<tr><td><span class="btag" style="font-size:13.5px;color:var(--text)"><i style="background:${BRANCH_COLORS[r.n.branch] || "#888"}"></i>${esc(r.n.branch)}</span></td>${tr(r)}<td>${fmtMins(r.avg)}</td><td>${nf(r.tsent)}${r.tfail ? ` <span style="color:var(--danger,#e53935);font-size:12px">(${r.tfail} failed)</span>` : ""}</td><td>${pct(r.tread, r.tsent - r.tfail)}</td></tr>`).join("")}
+    </tbody>${rows.length > 1 ? `<tfoot><tr><td>Total</td>${tr(tot)}<td></td><td>${nf(tot.tsent)}</td><td>${pct(tot.tread, tot.tsent - tot.tfail)}</td></tr></tfoot>` : ""}</table>`;
+}
+function dashSeries(a) {
+  if (dash.days === 1) return a.perBranch.map((r) => ({ label: r.n.branch, full: "Green Trends " + r.n.branch, inn: r.received, out: r.sent }));
+  const by = new Map(); a.daily.forEach((r) => { const o = by.get(r.d) || { inn: 0, out: 0 }; o.inn += Number(r.received || 0); o.out += Number(r.sent || 0); by.set(r.d, o); });
+  const out = [];
+  for (let i = dash.days - 1; i >= 0; i--) {
+    const d = istDay(i), o = by.get(d) || { inn: 0, out: 0 }, dt = new Date(d + "T00:00:00");
+    out.push({ label: dt.toLocaleDateString("en-GB", { day: "numeric", month: "short" }), full: dt.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" }), ...o });
+  }
+  return out;
+}
+function niceMax(v) { if (v <= 4) return 4; const p = Math.pow(10, Math.floor(Math.log10(v))); const m = v / p; return (m <= 2 ? 2 : m <= 5 ? 5 : 10) * p; }
+function drawDashChart(a) {
+  const host = $("dash-chart"); if (!host) return;
+  const s = dashSeries(a);
+  if (dash.asTable) {
+    host.innerHTML = `<div class="tbl-scroll" style="max-height:320px;overflow-y:auto"><table class="tbl"><thead><tr><th>${dash.days === 1 ? "Branch" : "Day"}</th><th>Received</th><th>Sent</th></tr></thead><tbody>${(dash.days === 1 ? s : s.slice().reverse()).map((r) => `<tr><td>${esc(r.full)}</td><td>${nf(r.inn)}</td><td>${nf(r.out)}</td></tr>`).join("")}</tbody></table></div>`;
+    return;
+  }
+  const W = Math.max(260, host.clientWidth), H = 220, L = 34, R = 6, T = 10, B = 26;
+  const max = niceMax(Math.max(1, ...s.map((r) => Math.max(r.inn, r.out))));
+  const gw = (W - L - R) / s.length, bw = Math.max(2, Math.min(18, (gw - 8) / 2 - 1)), y = (v) => T + (H - T - B) * (1 - v / max);
+  const bar = (x, v, col) => { if (!v) return ""; const top = y(v), h = H - B - top, r = Math.min(4, bw / 2, h); return `<path fill="${col}" d="M${x},${H - B}V${top + r}q0,-${r} ${r},-${r}h${bw - 2 * r}q${r},0 ${r},${r}V${H - B}z"/>`; };
+  let g = "";
+  for (let i = 0; i <= 4; i++) { const v = (max / 4) * i, yy = y(v); g += `<line class="gl" x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}"/><text class="ax" x="${L - 6}" y="${yy + 4}" text-anchor="end">${Number.isInteger(v) ? nf(v) : v.toFixed(1)}</text>`; }
+  const every = Math.ceil(s.length / Math.max(1, Math.floor((W - L) / 54)));
+  s.forEach((r, i) => {
+    const cx = L + gw * i + gw / 2;
+    g += `<rect class="hit" data-i="${i}" x="${L + gw * i}" y="${T}" width="${gw}" height="${H - T - B}"/>`;
+    g += bar(cx - bw - 1, r.inn, DCOL.in) + bar(cx + 1, r.out, DCOL.out);
+    if (i % every === 0) g += `<text class="ax" x="${cx}" y="${H - 8}" text-anchor="middle">${esc(r.label.length > 12 ? r.label.slice(0, 11) + "…" : r.label)}</text>`;
+  });
+  host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Messages received and sent">${g}</svg><div class="ctip hidden"></div>`;
+  const tip = host.querySelector(".ctip");
+  host.querySelectorAll(".hit").forEach((h) => {
+    const show = () => { host.querySelectorAll(".hit.on").forEach((x) => x.classList.remove("on")); h.classList.add("on"); const r = s[+h.dataset.i];
+      tip.innerHTML = `<b>${esc(r.full)}</b><br><i style="background:${DCOL.in}"></i>Received ${nf(r.inn)}<br><i style="background:${DCOL.out}"></i>Sent ${nf(r.out)}`;
+      tip.classList.remove("hidden"); const cx = (+h.getAttribute("x") + +h.getAttribute("width") / 2) * (host.clientWidth / W);
+      tip.style.left = Math.min(host.clientWidth - 70, Math.max(70, cx)) + "px"; tip.style.top = y(Math.max(r.inn, r.out)) + "px"; };
+    h.addEventListener("mouseenter", show); h.addEventListener("click", show);
+    h.addEventListener("mouseleave", () => { h.classList.remove("on"); tip.classList.add("hidden"); });
+  });
+}
+window.addEventListener("resize", debounce(() => { if (!$("dash").classList.contains("hidden") && dash.data && !dash.asTable) drawDashChart(dashAgg()); }, 150));
+const dashSig = () => convs.filter(isWaiting).map((c) => c.id + ":" + c.last_message_at).join(",") + "|" + Math.floor(Date.now() / 60000);
+const dashLive = debounce(() => { if (!$("dash").classList.contains("hidden") && dash.data && !dash.loading && dash.sig !== dashSig()) renderDash(); }, 800);
+
 /* ===================== bulk send ===================== */
 // Approximate Meta charge per delivered message in India (₹, before GST)
 const RATE = { MARKETING: 0.7846, UTILITY: 0.115, AUTHENTICATION: 0.115 };
@@ -2323,7 +2620,7 @@ const fillText = (t, params) => { let o = t || ""; params.forEach((v, i) => (o =
 const dataRows = () => (bk.hasHeader ? bk.rows.slice(1) : bk.rows);
 const rateFor = (t) => RATE[t?.category] ?? RATE.MARKETING;
 
-function openBulk() { hideMenu(); const had = tabOpen(); hidePanelRaw(); if (!had) pushNav(); $("bulk").classList.remove("hidden"); setRail("bulk"); bkShow(bk.view === "progress" ? "history" : bk.view); }
+function openBulk() { hideMenu(); const had = tabOpen(); hidePanelRaw(); hideDashRaw(); if (!had) pushNav(); $("bulk").classList.remove("hidden"); setRail("bulk"); bkShow(bk.view === "progress" ? "history" : bk.view); }
 function closeBulk() { if ($("bulk").classList.contains("hidden")) return; if (isMobile() && navDepth > 0) { history.back(); return; } hideBulkRaw(); setRail("chats"); }
 $("btn-bulk").onclick = (e) => { e.stopPropagation(); openBulk(); };
 $("bk-back").onclick = () => { if (bk.view === "progress") bkShow("history"); else closeBulk(); };
