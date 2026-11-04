@@ -854,6 +854,28 @@ function dayLabel(iso) {
   if (now - d < 6 * 864e5) return d.toLocaleDateString([], { weekday: "long" });
   return d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 }
+/* plain-language reasons for WhatsApp delivery errors */
+const ERR_TEXT = {
+  131049: "Meta held back this marketing message so the customer doesn't get too many offers. Not a problem with your number. Bulk sends retry it automatically after 24 hours; customers who message you first are not limited.",
+  131042: "No payment card on this branch's WhatsApp account. Add one in Meta Billing & payments.",
+  131026: "This number can't receive WhatsApp messages (not on WhatsApp, or an old app version).",
+  131047: "More than 24 hours since the customer last messaged. Send an approved template instead.",
+  131050: "The customer has stopped marketing messages from businesses.",
+  131051: "This message type isn't supported.",
+  131053: "The photo or file couldn't be uploaded. Try a smaller file.",
+  131056: "Too many messages to this customer too quickly. Wait a moment and try again.",
+  130472: "Meta is testing with this customer's number, so marketing messages aren't delivered to them right now.",
+  132000: "The template's blanks don't match what was filled in.",
+  132001: "This template doesn't exist or isn't approved in this language.",
+  132015: "This template is paused by Meta because of low quality.",
+  132016: "This template is disabled by Meta.",
+  368: "Meta has temporarily restricted this account for policy reasons.",
+};
+function errText(e) {
+  const s = String(e || ""); const m = s.match(/\b(\d{3,6})\b/);
+  const known = m && ERR_TEXT[Number(m[1])];
+  return known ? `${known} (code ${m[1]})` : (s || "Not delivered");
+}
 const fullTime = (iso) => iso ? new Date(iso).toLocaleString([], { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "2-digit" }) : "—";
 
 /* ===================== icons ===================== */
@@ -905,7 +927,7 @@ const TICK = {
 function tickHtml(m) {
   if (m.direction !== "out") return "";
   const s = m.status || "sending";
-  if (s === "failed") return `<span class="tick failed" title="${esc(m.error || "Not delivered")}">${TICK.failed}</span>`;
+  if (s === "failed") return `<span class="tick failed" title="${esc(errText(m.error))}">${TICK.failed}</span>`;
   if (s === "read") return `<span class="tick read">${TICK.double}</span>`;
   if (s === "delivered") return `<span class="tick">${TICK.double}</span>`;
   if (s === "sent") return `<span class="tick">${TICK.sent}</span>`;
@@ -1007,6 +1029,7 @@ async function afterLogin() {
   $("rail-avatar").textContent = initials(me.email.split("@")[0]) || "GT";
   await loadAll();
   subscribe();
+  retryDueSoon();
   const m = location.hash.match(/^#chat-(\d+)$/); if (m && convById.has(Number(m[1]))) openChat(Number(m[1]));
   if (!me.token_ready) toast("Sending isn't set up yet (WhatsApp token missing). You can read chats.", 6000);
 }
@@ -1017,6 +1040,13 @@ function upsertConv(row) {
   const old = convById.get(row.id);
   if (old) Object.assign(old, row); else { convs.push(row); convById.set(row.id, row); }
   return convById.get(row.id);
+}
+// resend bulk messages that Meta's marketing limit held back, once their 24-hour wait is over
+let retryTimer = null;
+function retryDueSoon() {
+  if (DEMO) return;
+  const go = () => api({ action: "bulk_retry_due" }).catch(() => {});
+  go(); clearInterval(retryTimer); retryTimer = setInterval(go, 15 * 60 * 1000);
 }
 async function loadAll() {
   if (DEMO) { numbers = DEMO_DATA.numbers; setConvs(DEMO_DATA.convs.map((c) => ({ ...c }))); quickReplies = DEMO_DATA.qr; await loadContacts(); renderChips(); renderList(); return; }
@@ -1655,7 +1685,7 @@ function bubbleHtml(m) {
   if (["location", "contacts", "unknown", "unsupported"].includes(m.msg_type) || (!["text", "template", "image", "video", "audio", "document", "sticker"].includes(m.msg_type))) h += `<span class="txt">${fmtText(bodyTxt || `[${m.msg_type}]`)}</span>`;
   else if (bodyTxt) h += `<span class="txt">${fmtText(bodyTxt)}</span>`;
   h += `<span class="meta ${mediaOnly ? "over" : ""}">${m.starred ? I(P.star, 11, 'class="star"') : ""}${hm(m.ts)}${tickHtml(m)}</span>`;
-  if (m.status === "failed" && m.error) h += `<div class="err-line">Not sent: ${esc(m.error)}</div>`;
+  if (m.status === "failed" && m.error) h += `<div class="err-line">Not sent: ${esc(errText(m.error))}</div>`;
   h += `<button class="mchev" data-mchev="${esc(m.id)}" tabindex="-1">${I(P.chev, 20)}</button>`;
   return { html: h, mediaOnly };
 }
@@ -2132,7 +2162,7 @@ function renderMsgInfo() {
     <div class="mi-row"><span style="color:var(--blue)">${TICK.double}</span><div><div class="t">Read</div><div class="d">${m.read_at ? fullTime(m.read_at) : m.status === "read" ? "Yes" : "—"}</div></div></div>
     <div class="mi-row"><span style="color:var(--icon2)">${TICK.double}</span><div><div class="t">Delivered</div><div class="d">${m.delivered_at ? fullTime(m.delivered_at) : ["delivered", "read"].includes(m.status) ? "Yes" : "—"}</div></div></div>
     <div class="mi-row"><span style="color:var(--icon2)">${TICK.sent}</span><div><div class="t">Sent</div><div class="d">${fullTime(m.ts)}${m.sent_by ? ` · by ${esc(m.sent_by === "bulk" ? "bulk send" : m.sent_by)}` : ""}</div></div></div>
-    ${m.status === "failed" ? `<div class="mi-row"><span style="color:var(--danger)">${TICK.failed}</span><div><div class="t" style="color:var(--danger)">Not delivered</div><div class="d">${esc(m.error || "")}</div></div></div>` : ""}`;
+    ${m.status === "failed" ? `<div class="mi-row"><span style="color:var(--danger)">${TICK.failed}</span><div><div class="t" style="color:var(--danger)">Not delivered</div><div class="d">${esc(errText(m.error))}</div></div></div>` : ""}`;
   hydrateInfoMedia();
 }
 function hydrateInfoMedia() { $("info-body").querySelectorAll(".load-media").forEach((el) => hydrateOne(el)); }
@@ -2865,7 +2895,7 @@ const stat = (l, v) => `<div class="stat"><b>${nf(v)}</b>${l}</div>`;
 async function openProgress(id) { bk.campaign = id; bkShow("progress"); $("bk-progress").innerHTML = `<div class="card"><p class="note">Loading…</p></div>`; await refreshProgress(); bk.timer = setInterval(refreshProgress, 4000); }
 async function refreshProgress() {
   const id = bk.campaign; let c;
-  if (DEMO) c = { id, name: "Hydra facial offer", phone_number_id: "p", template_name: "gdv_festive_offer", status: "sending", total: 120, pending: 40, sent: 75, delivered: 45, read: 10, failed: 3, skipped: 2, created_at: new Date().toISOString(), last_activity_at: new Date().toISOString() };
+  if (DEMO) c = { id, name: "Hydra facial offer", phone_number_id: "p", template_name: "gdv_festive_offer", status: "sending", total: 120, pending: 40, sent: 75, delivered: 45, read: 10, failed: 3, skipped: 2, retrying: 4, next_retry_at: new Date(Date.now() + 20 * 3600e3).toISOString(), created_at: new Date().toISOString(), last_activity_at: new Date().toISOString() };
   else {
     const { data, error } = await sb.from("wa_campaign_stats").select("*").eq("id", id).maybeSingle();
     if (bk.view !== "progress" || bk.campaign !== id) return;
@@ -2885,7 +2915,8 @@ async function refreshProgress() {
     <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><div style="min-width:0"><h3 style="margin:0 0 2px">${esc(c.name || c.template_name)}</h3><div class="note"><span class="dot-inline" style="background:${BRANCH_COLORS[n.branch] || "#888"}"></span>${esc(n.branch || "")} · ${esc(c.template_name)} · ${new Date(c.created_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</div></div><span class="pill ${esc(c.status)}">${label}</span></div>
     <div class="progress" style="margin-top:16px">${seg(c.read, "#53bdeb")}${seg(c.delivered - c.read, "#25d366")}${seg(c.sent - c.delivered, "#9be3b4")}${seg(c.failed, "#ea0038")}${seg(c.skipped, "#c5ccd0")}</div>
     <div class="note" style="margin-top:6px">${nf(processed)} of ${nf(c.total)} done</div>
-    <div class="stats">${stat("Waiting", c.pending)}${stat("Sent", c.sent)}${stat("Delivered", c.delivered)}${stat("Read", c.read)}${stat("Failed", c.failed)}${stat("Skipped", c.skipped)}</div>
+    <div class="stats">${stat("Waiting", c.pending)}${stat("Sent", c.sent)}${stat("Delivered", c.delivered)}${stat("Read", c.read)}${c.retrying ? stat("Will retry", c.retrying) : ""}${stat("Failed", c.failed)}${stat("Skipped", c.skipped)}</div>
+    ${c.retrying ? `<div class="status warn">${nf(c.retrying)} customer${c.retrying === 1 ? " was" : "s were"} held back by Meta's marketing-message limit (error 131049). This is Meta protecting customers from too many offers, not a fault in your account. They will be sent again automatically${c.next_retry_at ? " from " + new Date(c.next_retry_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) : " after 24 hours"}.</div>` : ""}
     ${c.status === "paused" ? `<div class="status bad">Sending stopped: ${esc(reason || "a problem with this WhatsApp account")}. Fix that, then press Resume.</div>` : ""}
     ${stuck ? `<div class="status warn">Nothing has moved for a few minutes. Press Resume to carry on.</div>` : ""}
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
@@ -2906,12 +2937,12 @@ async function downloadReport(id, c) {
   if (DEMO) { toast("Report download works in the live app"); return; }
   let all = [];
   for (let from = 0; ; from += 1000) {
-    const { data, error } = await sb.from("wa_campaign_recipients").select("phone,name,status,error,sent_at,params").eq("campaign_id", id).order("id").range(from, from + 999);
+    const { data, error } = await sb.from("wa_campaign_recipients").select("phone,name,status,error,sent_at,params,retry_at").eq("campaign_id", id).order("id").range(from, from + 999);
     if (error) { toast(error.message); return; }
     all = all.concat(data || []); if (!data || data.length < 1000) break;
   }
   const q = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-  const csv = ["Phone,Name,Status,Reason,Sent at,Values used"].concat(all.map((r) => [fmtPhone(r.phone), r.name, r.status, r.error, r.sent_at ? new Date(r.sent_at).toLocaleString() : "", (r.params || []).join(" | ")].map(q).join(","))).join("\r\n");
+  const csv = ["Phone,Name,Status,Reason,Sent at,Values used"].concat(all.map((r) => [fmtPhone(r.phone), r.name, r.retry_at ? "will retry " + new Date(r.retry_at).toLocaleString() : r.status, r.error ? errText(r.error) : "", r.sent_at ? new Date(r.sent_at).toLocaleString() : "", (r.params || []).join(" | ")].map(q).join(","))).join("\r\n");
   const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" }));
   a.download = `${String(c.name || c.template_name || "bulk").replace(/[^\w-]+/g, "_")}_report.csv`; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 10000);
@@ -2927,7 +2958,7 @@ async function renderHistory() {
   if (bk.view !== "history") return;
   if (!rows.length) { el.innerHTML = `<div class="card"><p class="note">Nothing sent in bulk yet. Use “New message” to start.</p></div>`; return; }
   const label = { queued: "Starting", sending: "Sending", done: "Finished", cancelled: "Stopped", paused: "Paused" };
-  el.innerHTML = `<div class="card">` + rows.map((c) => { const n = numberById(c.phone_number_id); return `<div class="camp-row" data-id="${c.id}"><div style="min-width:0"><b>${esc(c.name || c.template_name)}</b><div class="note"><span class="dot-inline" style="background:${BRANCH_COLORS[n.branch] || "#888"}"></span>${esc(n.branch || "")} · ${new Date(c.created_at).toLocaleDateString([], { day: "numeric", month: "short" })} · ${nf(c.total)} customers · ${nf(c.delivered)} delivered${c.failed ? ` · ${nf(c.failed)} failed` : ""}</div></div><span class="pill ${esc(c.status)}">${label[c.status] || esc(c.status)}</span></div>`; }).join("") + `</div>`;
+  el.innerHTML = `<div class="card">` + rows.map((c) => { const n = numberById(c.phone_number_id); return `<div class="camp-row" data-id="${c.id}"><div style="min-width:0"><b>${esc(c.name || c.template_name)}</b><div class="note"><span class="dot-inline" style="background:${BRANCH_COLORS[n.branch] || "#888"}"></span>${esc(n.branch || "")} · ${new Date(c.created_at).toLocaleDateString([], { day: "numeric", month: "short" })} · ${nf(c.total)} customers · ${nf(c.delivered)} delivered${c.retrying ? ` · ${nf(c.retrying)} will retry` : ""}${c.failed ? ` · ${nf(c.failed)} failed` : ""}</div></div><span class="pill ${esc(c.status)}">${label[c.status] || esc(c.status)}</span></div>`; }).join("") + `</div>`;
   el.querySelectorAll(".camp-row").forEach((r) => (r.onclick = () => openProgress(Number(r.dataset.id))));
 }
 
